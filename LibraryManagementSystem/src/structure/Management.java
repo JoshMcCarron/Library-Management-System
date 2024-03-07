@@ -2,6 +2,7 @@ package structure;
 
 import items.PhysicalItem;
 import userTypes.*;
+import java.util.Random;
 
 public class Management {
 	private static Management singleManageTeam;
@@ -15,9 +16,12 @@ public class Management {
 		return singleManageTeam;
 	}
 
-	public boolean validate(User user) {
-		System.out.println(user.getEmail()+ " you have successfully been validated and registered as a user of our system");
-		return true;
+	public int  validate() {
+        Random rand = new Random();
+
+        int randomNumber = rand.nextInt(10) + 1;
+
+        return randomNumber;
 	}
 	
 

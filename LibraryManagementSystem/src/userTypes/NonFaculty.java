@@ -1,10 +1,16 @@
 package userTypes;
 
+import structure.Management;
+
 public class NonFaculty extends User{
 
-	public NonFaculty(String email, String password) {
-		super(email, password);
+	public NonFaculty(String email, String password, String userType) throws Exception {
+		super(email, password, userType);
 		// TODO Auto-generated constructor stub
+	}
+	public NonFaculty(String email, String password, String userType, Management manager) throws Exception {
+		// TODO Auto-generated constructor stub
+		super(email, password, userType, manager);
 	}
 
 }

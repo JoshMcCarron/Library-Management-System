@@ -58,45 +58,45 @@ public class Rent {
 
 
 
-
-	public void rentItem(Rent rental) {
-		if(this.user.getRentals().size() >= 10 || this.user.totalOverdue(user) == 3 ) {
-			System.out.println("You are unable to rent any items");
-		}
-		else {
-			this.user.addRental(rental);
-		}
-	}
-
-	public boolean isOverdue(Rent rental) {
-		if (rental.returned == false) {
-			if (rental.dateDue > rental.dateBorrowed) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void calculatePenalty(Rent rental) {
-		if (isOverdue(rental)== true) {
-			this.penalty = (rental.currentDate - rental.dateDue)*0.5;
-		}
-		else {
-			if((rental.dateReturned - rental.dateDue) > 0) {
-				this.penalty = (rental.dateReturned - rental.dateDue)*0.5;
-			}
-		}
-
-	}
-
-	public void returnItem(Rent rental) {
-		this.user.removeRental(rental);
-		returned = true;
-		this.dateReturned = this.currentDate;
-
-	}
-
-
+//
+//	public void rentItem(Rent rental) {
+//		if(this.user.getRentals().size() >= 10 || this.user.totalOverdue(user) == 3 ) {
+//			System.out.println("You are unable to rent any items");
+//		}
+//		else {
+//			this.user.addRental(rental);
+//		}
+//	}
+//
+//	public boolean isOverdue(Rent rental) {
+//		if (rental.returned == false) {
+//			if (rental.dateDue > rental.dateBorrowed) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//
+//	public void calculatePenalty(Rent rental) {
+//		if (isOverdue(rental)== true) {
+//			this.penalty = (rental.currentDate - rental.dateDue)*0.5;
+//		}
+//		else {
+//			if((rental.dateReturned - rental.dateDue) > 0) {
+//				this.penalty = (rental.dateReturned - rental.dateDue)*0.5;
+//			}
+//		}
+//
+//	}
+//
+//	public void returnItem(Rent rental) {
+//		this.user.removeRental(rental);
+//		returned = true;
+//		this.dateReturned = this.currentDate;
+//
+//	}
+//
+//
 
 
 

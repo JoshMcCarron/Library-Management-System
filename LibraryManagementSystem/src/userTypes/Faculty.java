@@ -11,9 +11,13 @@ public class Faculty extends User{
     private List<Course> courses;
     private List<Textbook> textbooks;
     private Management manager;
-	public Faculty(String email, String password) {
+	public Faculty(String email, String password, String userType) throws Exception {
 		// TODO Auto-generated constructor stub
-		super(email, password);
+		super(email, password, userType);
+	}
+	public Faculty(String email, String password, String userType, Management manager) throws Exception {
+		// TODO Auto-generated constructor stub
+		super(email, password, userType, manager);
 	}
 	public boolean getValidate() {
 		return true;
