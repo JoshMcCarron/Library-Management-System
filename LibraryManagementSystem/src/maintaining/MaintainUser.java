@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+
+import structure.Management;
 import userTypes.*;
 
 public class MaintainUser {
@@ -15,31 +17,31 @@ public class MaintainUser {
 		reader.readHeaders();
 
 		while(reader.readRecord()){
-		    String userType = reader.get("userType");
-		    User user;
+			String userType = reader.get("userType");
+			User user;
 
-		    switch(userType) {
-		        case "Student":
-		            user = new Student(path, path, path);
-		            break;
-		        case "Faculty":
-		            user = new Faculty(path, path, path);
-		            break;
-		        case "Non-Faculty":
-		            user = new NonFaculty(path, path, path);
-		            break;
-		        case "Visitor":
-		            user = new Visitor(path, path, path);
-		            break;
-		        default:
-		            throw new IllegalArgumentException("Invalid user type: " + userType);
-		    }
+			switch(userType) {
+			case "Student":
+				user = new Student(path, path, path);
+				break;
+			case "Faculty":
+				user = new Faculty(path, path, path);
+				break;
+			case "Non-Faculty":
+				user = new NonFaculty(path, path, path);
+				break;
+			case "Visitor":
+				user = new Visitor(path, path, path);
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid user type: " + userType);
+			}
 
-		    user.setId(Integer.parseInt(reader.get("id")));
-		    user.setEmail(reader.get("email"));
-		    user.setPassword(reader.get("password"));
-		    user.setUserType(userType);
-		    users.add(user);
+			user.setId(Integer.parseInt(reader.get("id")));
+			user.setEmail(reader.get("email"));
+			user.setPassword(reader.get("password"));
+			user.setUserType(userType);
+			users.add(user);
 		}
 	}
 
@@ -66,4 +68,40 @@ public class MaintainUser {
 			e.printStackTrace();
 		}
 	}
+
+	public User login(String email, String password) {
+		for (User user : users) {
+			if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+				return user;
+			}
+		}
+		return null;
+	}
+
+	public User register(String email, String password, String userType, Management manager) {
+		try {
+			User user;
+			switch (userType) {
+			case "Student":
+				user = new Student(email, password, userType, manager);
+				break;
+			case "Faculty":
+				user = new Faculty(email, password, userType, manager);
+				break;
+			case "Non-Faculty":
+				user = new NonFaculty(email, password, userType, manager);
+				break;
+			case "Visitor":
+				user = new Visitor(email, password, userType, manager);
+				break;
+			default:
+				return null;
+			}
+			return user;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
 }

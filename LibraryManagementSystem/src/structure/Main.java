@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[]args) throws Exception{
 		//temporarily using scanner but this will be the text boxes and buttons from the GUI
 		Scanner scanner = new Scanner(System.in);
+		boolean loggedIn = false;
 
 		String path = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintain = new MaintainUser();
@@ -37,61 +38,74 @@ public class Main {
 
 
 		Management manager = Management.getManagement();
-		while (true) {
-			System.out.println("Enter user type (Student, Faculty, Non-Faculty, Visitor):");
-			String userType = scanner.nextLine();
-			System.out.println("Enter email:");
-			String email = scanner.nextLine();
-			System.out.println("Enter password:");
-			String password = scanner.nextLine();
 
-			try {
-		        User user;
-		        switch (userType) {
-		        case "Student":
-		            user = new Student(email, password, userType, manager);
-		            break;
-		        case "Faculty":
-		            user = new Faculty(email, password, userType, manager);
-		            break;
-		        case "Non-Faculty":
-		            user = new NonFaculty(email, password, userType, manager);
-		            break;
-		        case "Visitor":
-		            user = new Visitor(email, password, userType, manager);
-		            break;
-		        default:
-		            System.out.println("Invalid user type. Try again.");
-		            continue;
-		        }
-		        maintain.users.add(user);
-		        maintain.update(path);
-		        System.out.println(userType + " created successfully with id: " + user.getId());
-		    } catch (Exception e) {
-		        System.out.println(e.getMessage());
-		    }
-		    System.out.println("Do you want to continue? (yes/no)");
-		    String response = scanner.nextLine();
-		    if (response.equalsIgnoreCase("no")) {
-		        break;
-		    }
+
+		//register or log in
+		System.out.println("Would you like to (register) or (login)?");
+		String regOrLog = scanner.nextLine();
+		while (!loggedIn) {
+			//register
+			if (regOrLog.equals("register")) {
+				System.out.println("Enter user type (Student, Faculty, Non-Faculty, Visitor):");
+				String userType = scanner.nextLine();
+				System.out.println("Enter email:");
+				String email = scanner.nextLine();
+				System.out.println("Enter password:");
+				String password = scanner.nextLine();
+
+				User user = maintain.register(email, password, userType, manager);
+
+				if (user != null) {
+			        maintain.users.add(user);
+			        maintain.update(path);
+					System.out.println(userType + " registered successfully with id: " + user.getId());
+					loggedIn = true;
+				} else {
+					System.out.println("Registration failed. Try again.");
+				}
+			}
+			//login
+			else if (regOrLog.equals("login")){
+				System.out.println("Enter email:");
+				String email = scanner.nextLine();
+				System.out.println("Enter password:");
+				String password = scanner.nextLine();
+
+				User user = maintain.login(email, password);
+				if (user != null) {
+					// The user has successfully logged in
+					System.out.println("Login successful!");
+					loggedIn = true;
+					//everything accessible once logged in here
+					
+					//just to test if methods are specific to that user
+					System.out.println(user);
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				} else {
+					// The entered email and password do not match any user
+					System.out.println("Invalid email or password.");
+				}
+			}
+			else {
+				System.out.println("Invalid option. Please enter either 'register' or 'login'.");
+			}
 		}
-		scanner.close();
 		
-		//this is just to check the object type of each of the users in our database
-		for(User u: maintain.users){
-		    if(u instanceof Student) {
-		        System.out.println(u.toString() + " is a Student");
-		    } else if(u instanceof Faculty) {
-		        System.out.println(u.toString() + " is a Faculty");
-		    } else if(u instanceof NonFaculty) {
-		        System.out.println(u.toString() + " is a Non-Faculty");
-		    } else if(u instanceof Visitor) {
-		        System.out.println(u.toString() + " is a Visitor");
-		    } else {
-		        System.out.println(u.toString() + " is of unknown type");
-		    }
-		}
+		
+
+
+
+		scanner.close();
+
 
 
 		//		Student user1 = new Student("joshmcc@my.yorku.ca", "password");

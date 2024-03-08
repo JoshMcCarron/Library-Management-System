@@ -105,6 +105,8 @@ public abstract class  User {
 		}
 		return false;
 	}
+	
+
 
 	public String getUserType() {
 		return userType;
