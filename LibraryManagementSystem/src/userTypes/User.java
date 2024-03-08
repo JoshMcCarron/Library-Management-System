@@ -85,7 +85,7 @@ public abstract class  User {
 
 	@Override
 	public String toString() {
-		return "User {email=" + this.email + ", password=" + this.password + ",id=" + this.id + "]";
+		return "User [email=" + this.email + ", password=" + this.password + ",id=" + this.id + "]";
 	}
 
 	private static boolean isEmailExists(String email) {

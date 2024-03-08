@@ -2,42 +2,96 @@ package maintaining;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Random;
+
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import items.PhysicalItem;
+import items.*;
+import userTypes.Faculty;
+import userTypes.NonFaculty;
+import userTypes.Student;
+import userTypes.User;
+import userTypes.Visitor;
 
 public class MaintainPhysicalItems {
 	public ArrayList<PhysicalItem> items = new ArrayList<PhysicalItem>();
 	public String path;
-	
+
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 
 		reader.readHeaders();
-		
-		while(reader.readRecord()){ 
-			PhysicalItem item = new PhysicalItem(0, path) {};
-			item.setNumOfCopies(Integer.valueOf(reader.get("copies")));
+
+		while(reader.readRecord()){
+			String itemType = reader.get("itemType");
+			PhysicalItem item;
+
+			switch(itemType) {
+			case "Book":
+				item = new Book(path, path, path);
+				break;
+			case "Magazine":
+				item = new Magazine(path, path, path);
+				break;
+			case "CD":
+				item = new CD(path, path, path);
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid item type: " + itemType);
+			}
+
+			item.setId(Integer.valueOf(reader.get("id")));
 			item.setTitle(reader.get("title"));
+			item.setNumOfCopies(Integer.valueOf(reader.get("copies")));
+			item.setAuthor(reader.get("author"));
+			item.setItemType(reader.get("itemType"));
 			items.add(item);
 		}
 	}
-	
+
 	public void update(String path) throws Exception{
 		try {		
-				CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');
-		    	csvOutput.write("copies");
-				csvOutput.write("title");
-				csvOutput.endRecord();
+			CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');
+			csvOutput.write("id");
+			csvOutput.write("title");
+			csvOutput.write("copies");
+			csvOutput.write("author");
+			csvOutput.write("itemType");
+			csvOutput.endRecord();
 
-				for(PhysicalItem i: items){
-					csvOutput.write(String.valueOf(i.getNumOfCopies()));
-					csvOutput.write(i.getTitle());
-					csvOutput.endRecord();
-				}
-				csvOutput.close();
-			
-			}catch (Exception e) {
-				e.printStackTrace();
+			for(PhysicalItem i: items){
+				csvOutput.write(String.valueOf(i.getId()));
+				csvOutput.write(i.getTitle());
+				csvOutput.write(String.valueOf(i.getNumOfCopies()));
+				csvOutput.write(i.getAuthor());
+				csvOutput.write(i.getItemType());
+				csvOutput.endRecord();
 			}
+			csvOutput.close();
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public PhysicalItem request(String author, String title) {
+		try {
+			PhysicalItem item;
+			if (simulateRequest() > 5) {
+				item = new Book(author, title, "Book");
+			}
+			else {
+				item = null; 
+			}
+			return item;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	public int simulateRequest() {
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(10) + 1;
+		return randomNumber;		
 	}
 }

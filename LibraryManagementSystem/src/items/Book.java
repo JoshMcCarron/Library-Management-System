@@ -1,7 +1,7 @@
 package items;
 
 public class Book extends PhysicalItem{
-	public Book(int copies, String title) {
-		super(copies,title);
+	public Book(String title, String author, String itemType) {
+		super(title,author, itemType);
 	}
 }

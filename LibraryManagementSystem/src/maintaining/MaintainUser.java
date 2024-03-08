@@ -12,6 +12,7 @@ public class MaintainUser {
 	public ArrayList<User> users = new ArrayList<User>();
 	public String path;
 
+	//loads user CSV file and turns every row into a user object
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 
 		reader.readHeaders();
@@ -44,7 +45,7 @@ public class MaintainUser {
 			users.add(user);
 		}
 	}
-
+	//used for adding a new user object
 	public void update(String path) throws Exception{
 		try {		
 			CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');
@@ -69,6 +70,7 @@ public class MaintainUser {
 		}
 	}
 
+	//method for user login
 	public User login(String email, String password) {
 		for (User user : users) {
 			if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
@@ -77,7 +79,7 @@ public class MaintainUser {
 		}
 		return null;
 	}
-
+	//method for user register
 	public User register(String email, String password, String userType, Management manager) {
 		try {
 			User user;

@@ -9,6 +9,8 @@ import items.Book;
 import items.Magazine;
 import items.Newsletter;
 import items.OnlineBook;
+import items.PhysicalItem;
+import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainUser;
 import userTypes.*;
 
@@ -17,29 +19,38 @@ public class Main {
 		//temporarily using scanner but this will be the text boxes and buttons from the GUI
 		Scanner scanner = new Scanner(System.in);
 		boolean loggedIn = false;
+	
 
-		String path = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
-		MaintainUser maintain = new MaintainUser();
+		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
+		MaintainUser maintainUser = new MaintainUser();
 
-		maintain.load(path);
-		for(User u: maintain.users){
+		String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
+		MaintainPhysicalItems  maintainItem = new MaintainPhysicalItems();
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		maintainItem.load(itemsPath);
+		for(PhysicalItem i: maintainItem.items){
+			System.out.println(i.toString());
+		}
+		
+		
+		
+		//user maintenance
+		maintainUser.load(userPath);
+		for(User u: maintainUser.users){
 			System.out.println(u.toString());
 		}
-
-		//		Student newUser = new Student("joshmcc@my.yorku.ca", "password");
-		//		maintain.users.add(newUser);
-		//
-		//		maintain.update(path);
-		//
-		//		Student newUser2 = new Student("randoEmail", "hjklasdf");
-		//		maintain.users.add(newUser);
-		//
-		//		maintain.update(path);
-
-
+		//create Manager to manage ALL users
 		Management manager = Management.getManagement();
-
-
 		//register or log in
 		System.out.println("Would you like to (register) or (login)?");
 		String regOrLog = scanner.nextLine();
@@ -53,11 +64,11 @@ public class Main {
 				System.out.println("Enter password:");
 				String password = scanner.nextLine();
 
-				User user = maintain.register(email, password, userType, manager);
+				User user = maintainUser.register(email, password, userType, manager);
 
 				if (user != null) {
-			        maintain.users.add(user);
-			        maintain.update(path);
+					maintainUser.users.add(user);
+					maintainUser.update(userPath);
 					System.out.println(userType + " registered successfully with id: " + user.getId());
 					loggedIn = true;
 				} else {
@@ -71,16 +82,36 @@ public class Main {
 				System.out.println("Enter password:");
 				String password = scanner.nextLine();
 
-				User user = maintain.login(email, password);
+				User user = maintainUser.login(email, password);
 				if (user != null) {
 					// The user has successfully logged in
 					System.out.println("Login successful!");
 					loggedIn = true;
 					//everything accessible once logged in here
-					
+
 					//just to test if methods are specific to that user
 					System.out.println(user);
 					
+					//simulate request button
+					System.out.println("Would you like to request a new book? (yes) or (no)");
+					String reqOrNo = scanner.nextLine();
+					//this will be moved to request class
+					if (reqOrNo.equals("yes")) {
+						System.out.println("Please enter the author:");
+						String authorName = scanner.nextLine();
+						System.out.println("Please enter the title:");
+						String titleName = scanner.nextLine();
+						PhysicalItem newItem = maintainItem.request(authorName, titleName);
+						
+						if (newItem != null) {
+							maintainItem.items.add(newItem);
+							maintainItem.update(itemsPath);
+							System.out.println(titleName + " by " + authorName + " has successfully been added");
+						} else {
+							System.out.println("Your request has been denied!");
+						}
+						
+					}
 					
 					
 					
@@ -90,6 +121,11 @@ public class Main {
 					
 					
 					
+					
+					
+					
+					
+
 				} else {
 					// The entered email and password do not match any user
 					System.out.println("Invalid email or password.");
@@ -99,8 +135,8 @@ public class Main {
 				System.out.println("Invalid option. Please enter either 'register' or 'login'.");
 			}
 		}
-		
-		
+
+
 
 
 
