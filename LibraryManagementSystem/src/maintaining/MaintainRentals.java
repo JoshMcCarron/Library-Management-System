@@ -22,18 +22,20 @@ public class MaintainRentals {
 		reader.readHeaders();
 
 		while(reader.readRecord()){
+			int param0 = Integer.parseInt(reader.get("rentalId")); 
 			int param1 = Integer.parseInt(reader.get("userId")); 
 			int param2 = Integer.parseInt(reader.get("itemId")); 
 			LocalDate date1 = LocalDate.parse(reader.get("dateBorrowed")); 
 			LocalDate date2 = LocalDate.parse(reader.get("dateDue"));
 			LocalDate date3 = null; // initialize to null
+			//int param5 = Integer.parseInt(reader.get("rentalId")); 
 
 			// Check if dateReturned field is empty before parsing
 			if (!reader.get("dateReturned").isEmpty()) {
 				date3 = LocalDate.parse(reader.get("dateReturned")); 
 			}
 
-			Rent rental = new Rent(param1, param2, date1, date2, date3);
+			Rent rental = new Rent(param1, param2, date1, date2, date3, param0);
 			rentals.add(rental);
 		}
 

@@ -1,8 +1,13 @@
 package actions;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 
+import com.csvreader.CsvReader;
+
 import items.PhysicalItem;
+import maintaining.MaintainPhysicalItems;
+import maintaining.MaintainUser;
 import userTypes.User;
 
 public class Rent {
@@ -20,16 +25,47 @@ public class Rent {
 	private static int lastId = 0;
 	
 
-	public Rent(int userId, int itemId, LocalDate dateBorrowed, LocalDate dateDue, LocalDate dateReturned) {
+
+	String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
+	MaintainUser maintainUser = new MaintainUser();
+	
+	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
+	MaintainPhysicalItems  maintainItem = new MaintainPhysicalItems();
+	
+	public Rent(int userId, int itemId, LocalDate dateBorrowed, LocalDate dateDue, LocalDate dateReturned, int rentalId) throws Exception {
 		this.userId = userId;
 		this.itemId = itemId;
 		this.dateBorrowed = dateBorrowed;
 		this.dateDue = dateDue;
 		this.dateReturned = dateReturned;
 		this.rentalId = ++ lastId;
+		setUser(this.userId);
+		setItem(this.itemId);
+		this.rentalId = rentalId;
+		//get access to itemcount of item and decrease by if that specific item
 		
-		//GET USER AND ITEM OBJECT FROM IDS!!!!
 	}
+	//GET USER AND ITEM OBJECT FROM IDS!!!!
+	public void setUser(int userId) throws Exception {
+		maintainUser.load(userPath);
+	    for (User user : maintainUser.users) {
+	        if (user.getId() == userId) {
+	            this.user = user;
+	        }
+
+	    }
+	}
+	public void setItem(int itemId) throws Exception {
+		maintainItem.load(itemsPath);
+	    for (PhysicalItem item : maintainItem.items) {
+	        if (item.getId() == userId) {
+	            this.item = item;
+	        }
+
+	    }
+	}
+	
+	
 
 
 	public LocalDate getDateBorrowed() {
@@ -93,7 +129,27 @@ public class Rent {
 
 	@Override
 	public String toString() {
-		return "Rental [id=" + this.rentalId + ", userID=" + this.userId + ", itemID=" + this.itemId + ", date borrowed="+ this.dateBorrowed + ", date due="+ this.dateDue+ ", date returned="+ this.dateReturned+"]";                                     
+		return "Rental [id=" + this.rentalId + " item name=" + this.item.getTitle()+ ", rented by:" + this.user.getEmail()+  ", date borrowed="+ this.dateBorrowed + ", date due="+ this.dateDue+ ", date returned="+ this.dateReturned+"]";                                     
+	}
+	
+
+
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public PhysicalItem getItem() {
+		return item;
+	}
+	public void setItem(PhysicalItem item) {
+		this.item = item;
 	}
 
 
