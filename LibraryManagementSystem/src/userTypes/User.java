@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import actions.Rent;
 import items.Book;
+import maintaining.MaintainRentals;
 import structure.Management;
 
 public abstract class  User {
@@ -21,7 +22,8 @@ public abstract class  User {
 	private int id;
 	private String userType;
 	private static final String CSV_FILE_PATH = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
-
+	String rentalsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\itemsBorrowed.csv";
+	MaintainRentals maintainRental = new MaintainRentals();
 
 	public User(String email, String password, String userType) throws Exception{
 		this.email = email;
@@ -30,6 +32,14 @@ public abstract class  User {
 		this.userType= userType;
 
 	}
+	
+//	public User(String email, String password, String userType, int id) throws Exception{
+//		this.email = email;
+//		this.password = password;
+//		this.id = this.id;        
+//		this.userType= userType;
+//
+//	}
 
 	public User(String email, String password, String userType, Management manager) throws Exception{
 		// TODO Auto-generated constructor stub
@@ -59,6 +69,22 @@ public abstract class  User {
 			}
 		}
 	}
+
+
+	public void setRentals() throws Exception {
+		maintainRental.load(rentalsPath);
+		for (Rent r: maintainRental.rentals) {
+	        if (r.getUserId() == this.id) {
+	            rentals.add(r);
+	        }
+		}
+
+	}
+
+	public ArrayList<Rent> getRentals(){
+		return this.rentals;
+	}
+
 
 	public int getId() {
 		return id;
@@ -105,7 +131,7 @@ public abstract class  User {
 		}
 		return false;
 	}
-	
+
 
 
 	public String getUserType() {
@@ -115,6 +141,8 @@ public abstract class  User {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
+
+
 
 
 	//	public boolean getValidate() {

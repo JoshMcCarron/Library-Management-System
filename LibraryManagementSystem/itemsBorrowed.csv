@@ -1,2 +1,4 @@
-"rentalId	",userId,itemId,dateBorrowed,dateDue,dateReturned
+rentalId,userId,itemId,dateBorrowed,dateDue,dateReturned
 1,2,1,2024-03-08,2024-03-15,
+2,1,1,2024-03-08,2024-03-15,
+3,2,2,2024-03-08,2024-03-15,

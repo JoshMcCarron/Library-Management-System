@@ -53,6 +53,8 @@ public class Main {
 		for (Rent r: maintainRental.rentals) {
 			System.out.println(r.toString());
 		}
+		
+		
 
 		//create Manager to manage ALL users
 		Management manager = Management.getManagement();
@@ -104,6 +106,19 @@ public class Main {
 
 					//just to test if methods are specific to that user
 					System.out.println(user);
+					
+					//display list of rentals by that user
+					user.setRentals();
+					for (Rent rentals: user.getRentals()) {
+						System.out.println(rentals.toString());
+					}
+
+					
+					
+					
+					
+					
+					
 
 					//simulate request button
 					System.out.println("Would you like to request a new book? (yes) or (no)");
@@ -125,6 +140,8 @@ public class Main {
 						}
 
 					}
+					
+					
 
 
 
