@@ -77,7 +77,7 @@ public class MaintainPhysicalItems {
 		try {
 			PhysicalItem item;
 			if (simulateRequest() > 5) {
-				item = new Book(author, title, "Book");
+				item = new Book(title, author, "Book");
 			}
 			else {
 				item = null; 

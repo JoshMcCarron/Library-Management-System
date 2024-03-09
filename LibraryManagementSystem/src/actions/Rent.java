@@ -38,13 +38,29 @@ public class Rent {
 		this.dateBorrowed = dateBorrowed;
 		this.dateDue = dateDue;
 		this.dateReturned = dateReturned;
-		this.rentalId = ++ lastId;
 		setUser(this.userId);
 		setItem(this.itemId);
 		this.rentalId = rentalId;
+		lastId = rentalId;
 		//get access to itemcount of item and decrease by if that specific item
 		
 	}
+	
+	public Rent(int userId, String itemTitle, String itemAuthor) throws Exception {
+		this.userId = userId;
+		setItemId(itemTitle, itemAuthor);
+		this.dateBorrowed = LocalDate.now();
+		this.dateDue = this.dateBorrowed.plusDays(30);
+		this.dateReturned = null;
+		this.rentalId = ++lastId;
+		setUser(this.userId);
+		setItem(this.itemId);
+		
+	}
+	
+	
+	
+	
 	//GET USER AND ITEM OBJECT FROM IDS!!!!
 	public void setUser(int userId) throws Exception {
 		maintainUser.load(userPath);
@@ -58,8 +74,18 @@ public class Rent {
 	public void setItem(int itemId) throws Exception {
 		maintainItem.load(itemsPath);
 	    for (PhysicalItem item : maintainItem.items) {
-	        if (item.getId() == userId) {
+	        if (item.getId() == itemId) {
 	            this.item = item;
+	        }
+
+	    }
+	}
+	
+	public void setItemId(String itemTitle, String itemAuthor) throws Exception {
+		maintainItem.load(itemsPath);
+	    for (PhysicalItem item : maintainItem.items) {
+	        if (item.getAuthor().equals(itemAuthor)&& item.getTitle().equals(itemTitle)) {
+	            this.itemId = item.getId();
 	        }
 
 	    }

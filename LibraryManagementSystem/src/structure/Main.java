@@ -112,7 +112,18 @@ public class Main {
 					for (Rent rentals: user.getRentals()) {
 						System.out.println(rentals.toString());
 					}
-
+					
+					System.out.println("Enter the title of the item you would like to rent:");
+					String rentalTitle = scanner.nextLine();
+					System.out.println("Enter the author/creator of the item you would like to rent:");
+					String rentalAuthor = scanner.nextLine();
+					Rent newRental = new Rent(user.getId(), rentalTitle, rentalAuthor);
+					
+					if (newRental != null) {
+						maintainRental.rentals.add(newRental);
+						maintainRental.update(rentalsPath);
+						System.out.println("Succesfully rented");
+					} 
 					
 					
 					

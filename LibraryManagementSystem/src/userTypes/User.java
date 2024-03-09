@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import actions.Rent;
 import items.Book;
@@ -69,8 +70,20 @@ public abstract class  User {
 			}
 		}
 	}
+	
+//dont think this method is needed	
+//	public Rent newRent(int userId, String title, String author) {
+//		try {
+//			Rent newRental = new Rent(userId,title, author);
+//			return newRental;
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//			return null;
+//		}
+//	}
 
-
+	
+	//sets the rentals for a specific user
 	public void setRentals() throws Exception {
 		maintainRental.load(rentalsPath);
 		for (Rent r: maintainRental.rentals) {
