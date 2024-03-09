@@ -10,8 +10,7 @@ import items.Magazine;
 import items.Newsletter;
 import items.OnlineBook;
 import items.PhysicalItem;
-import maintaining.MaintainPhysicalItems;
-import maintaining.MaintainUser;
+import maintaining.*;
 import userTypes.*;
 
 public class Main {
@@ -19,7 +18,7 @@ public class Main {
 		//temporarily using scanner but this will be the text boxes and buttons from the GUI
 		Scanner scanner = new Scanner(System.in);
 		boolean loggedIn = false;
-	
+		String regOrLog="";
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
@@ -27,34 +26,48 @@ public class Main {
 		String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
 		MaintainPhysicalItems  maintainItem = new MaintainPhysicalItems();
 
+		String rentalsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\itemsBorrowed.csv";
+		MaintainRentals maintainRental = new MaintainRentals();
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+		//load items
 		maintainItem.load(itemsPath);
 		for(PhysicalItem i: maintainItem.items){
 			System.out.println(i.toString());
 		}
-		
-		
-		
-		//user maintenance
+
+		//load users
 		maintainUser.load(userPath);
 		for(User u: maintainUser.users){
 			System.out.println(u.toString());
 		}
+
+		//load rentals
+		maintainRental.load(rentalsPath);
+		for (Rent r: maintainRental.rentals) {
+			System.out.println(r.toString());
+		}
+
 		//create Manager to manage ALL users
 		Management manager = Management.getManagement();
 		//register or log in
-		System.out.println("Would you like to (register) or (login)?");
-		String regOrLog = scanner.nextLine();
+		while(!regOrLog.equals("register") && !regOrLog.equals("login")) {
+
+			System.out.println("Would you like to (register) or (login)?");
+			regOrLog = scanner.nextLine();
+			if (!regOrLog.equals("register")&& !regOrLog.equals("login")) {
+				System.out.println("Invalid input");
+			}
+		}
 		while (!loggedIn) {
+
+
 			//register
 			if (regOrLog.equals("register")) {
 				System.out.println("Enter user type (Student, Faculty, Non-Faculty, Visitor):");
@@ -91,7 +104,7 @@ public class Main {
 
 					//just to test if methods are specific to that user
 					System.out.println(user);
-					
+
 					//simulate request button
 					System.out.println("Would you like to request a new book? (yes) or (no)");
 					String reqOrNo = scanner.nextLine();
@@ -102,7 +115,7 @@ public class Main {
 						System.out.println("Please enter the title:");
 						String titleName = scanner.nextLine();
 						PhysicalItem newItem = maintainItem.request(authorName, titleName);
-						
+
 						if (newItem != null) {
 							maintainItem.items.add(newItem);
 							maintainItem.update(itemsPath);
@@ -110,21 +123,21 @@ public class Main {
 						} else {
 							System.out.println("Your request has been denied!");
 						}
-						
+
 					}
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 				} else {
 					// The entered email and password do not match any user

@@ -1,59 +1,99 @@
 package actions;
 
+import java.time.LocalDate;
+
 import items.PhysicalItem;
 import userTypes.User;
 
 public class Rent {
-	private int dateBorrowed;
-	private int dateDue;
-	private int dateReturned;
+	private LocalDate dateBorrowed;
+	private LocalDate dateDue;
+	private LocalDate dateReturned;
 	private User user;
 	private PhysicalItem item;
 	private int currentDate;
 	private double penalty;
 	private boolean returned = false;
+	private int userId;
+	private int itemId;
+	private int rentalId;
+	private static int lastId = 0;
+	
 
-	public Rent(User user, PhysicalItem item, int dateBorrowed) {
+	public Rent(int userId, int itemId, LocalDate dateBorrowed, LocalDate dateDue, LocalDate dateReturned) {
+		this.userId = userId;
+		this.itemId = itemId;
 		this.dateBorrowed = dateBorrowed;
-		this.item = item;
-		this.user = user;
-
+		this.dateDue = dateDue;
+		this.dateReturned = dateReturned;
+		this.rentalId = ++ lastId;
+		
+		//GET USER AND ITEM OBJECT FROM IDS!!!!
 	}
 
-	public int getDateBorrowed() {
+
+	public LocalDate getDateBorrowed() {
 		return dateBorrowed;
 	}
-	public int getDateDue() {
+
+
+	public void setDateBorrowed(LocalDate dateBorrowed) {
+		this.dateBorrowed = dateBorrowed;
+	}
+
+
+	public LocalDate getDateDue() {
 		return dateDue;
 	}
-	public void setDateDue(int dateDue) {
+
+
+	public void setDateDue(LocalDate dateDue) {
 		this.dateDue = dateDue;
 	}
 
-	public User getUser() {
-		return user;
+
+	public LocalDate getDateReturned() {
+		return dateReturned;
 	}
 
-	public int getCurrentDate() {
-		return currentDate;
+
+	public void setDateReturned(LocalDate dateReturned) {
+		this.dateReturned = dateReturned;
 	}
 
-	public void setCurrentDate(int currentDate) {
-		this.currentDate = currentDate;
+
+	public int getUserId() {
+		return userId;
 	}
 
-	public PhysicalItem getItem() {
-		return item;
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
-	public double getPenalty() {
-		return this.penalty;
+
+	public int getItemId() {
+		return itemId;
 	}
-	public boolean getReturned() {
-		return this.returned;
+
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
-	public int getDateReturned() {
-		return this.dateReturned;
+
+
+	public int getRentalId() {
+		return rentalId;
+	}
+
+
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
+
+	@Override
+	public String toString() {
+		return "Rental [id=" + this.rentalId + ", userID=" + this.userId + ", itemID=" + this.itemId + ", date borrowed="+ this.dateBorrowed + ", date due="+ this.dateDue+ ", date returned="+ this.dateReturned+"]";                                     
 	}
 
 
