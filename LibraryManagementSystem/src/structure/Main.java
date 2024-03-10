@@ -23,7 +23,7 @@ public class Main {
 		boolean loggedIn = false;
 		String regOrLog="";
 		boolean validRent = false;
-		 LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
@@ -43,21 +43,21 @@ public class Main {
 
 		//load items
 		maintainItem.load(itemsPath);
-//		for(PhysicalItem i: maintainItem.items){
-//			System.out.println(i.toString());
-//		}
+		//		for(PhysicalItem i: maintainItem.items){
+		//			System.out.println(i.toString());
+		//		}
 
 		//load users
 		maintainUser.load(userPath);
-//		for(User u: maintainUser.users){
-//			System.out.println(u.toString());
-//		}
+		//		for(User u: maintainUser.users){
+		//			System.out.println(u.toString());
+		//		}
 
 		//load rentals
 		maintainRental.load(rentalsPath);
-//		for (Rent r: maintainRental.rentals) {
-//			System.out.println(r.toString());
-//		}
+		//		for (Rent r: maintainRental.rentals) {
+		//			System.out.println(r.toString());
+		//		}
 
 
 
@@ -117,59 +117,69 @@ public class Main {
 					user.setRentals();
 					for (Rent rentals: user.getRentals()) {
 
-					    LocalDateTime dueDateTime = rentals.getDateDue().atStartOfDay();
-					    long days = ChronoUnit.DAYS.between(now, dueDateTime);
-					    
-					    if (days <= 1 && days >= 0) {
-					        System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is due in the next day.");
-					    } else if (days < 0) {
-					        System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is overdue.");
-					    } else {
-					        System.out.println(rentals.toString());
-					    }
-					}
-//					for (Rent rentals: user.getRentals()) {
-//						
-//						System.out.println(rentals.toString());
-//					}
-					
-					while (!validRent) {
-					    System.out.println("Enter the title of the item you would like to rent:");
-					    String rentalTitle = scanner.nextLine();
-					    System.out.println("Enter the author/creator of the item you would like to rent:");
-					    String rentalAuthor = scanner.nextLine();
+						LocalDateTime dueDateTime = rentals.getDateDue().atStartOfDay();
+						long days = ChronoUnit.DAYS.between(now, dueDateTime);
 
-					    boolean itemExists = false;
-					    for(PhysicalItem i: maintainItem.items){
-					        if (i.getTitle().equals(rentalTitle) && i.getAuthor().equals(rentalAuthor)) {
-					            itemExists = true;
-					            validRent = true; 
-					            Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
-					            if (newRental != null) {
-					                maintainRental.rentals.add(newRental);
-					                maintainRental.update(rentalsPath);
-					                maintainItem.update(itemsPath);
-
-					                System.out.println("Successfully rented");
-					                break;
-					            } 
-					        }
-					    }
-
-					    if (!itemExists) {
-					        System.out.println("An item with that name and author does not exist in our database");
-					    }
+						if (days <= 1 && days >= 0) {
+							System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is due in the next day.");
+						} else if (days < 0) {
+							System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is overdue.");
+						} else {
+							System.out.println(rentals.toString());
+						}
 					}
 
+					//Simulate rent process
+					System.out.println("Would you like to rent an item? (yes) or (no)");
+					String rentOrNo = scanner.nextLine();
+					if (rentOrNo.equals("yes")){
+						while (!validRent) {
+							System.out.println("Enter the title of the item you would like to rent:");
+							String rentalTitle = scanner.nextLine();
+							System.out.println("Enter the author/creator of the item you would like to rent:");
+							String rentalAuthor = scanner.nextLine();
 
+							boolean itemExists = false;
+							//check if item with that author and title exists
+							for(PhysicalItem i: maintainItem.items){
+								if (i.getTitle().equals(rentalTitle) && i.getAuthor().equals(rentalAuthor)) {
+									itemExists = true;
+									validRent = true;  //to prevent asking user to rent again-either they rented, or have max amount of rentals
+									break;
 
+								}
+							}
 
+							if (itemExists) {
 
+								if (user.getRentals().size()==10) {
+									System.out.println("You have reached the max amount of rentals! Please return items to rent again");
+								}
+								else {
+									Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
+									if (newRental != null) {
+										maintainRental.rentals.add(newRental);
+										maintainRental.update(rentalsPath);
+										maintainItem.update(itemsPath);
+
+										System.out.println("Successfully rented");
+										break;
+									} 
+								}
+							}
+							else{
+								System.out.println("An item with that name and author does not exist in our database");
+							}
+						}
+					}
 
 
 
 
 					//simulate request button
+					//NOTE: NEED TO ADD CHECK FOR IF ITEM IS ALREADY IN DATABASE
+					boolean requestStatus = false;
+					while (!requestStatus) {
 					System.out.println("Would you like to request a new book? (yes) or (no)");
 					String reqOrNo = scanner.nextLine();
 					//this will be moved to request class
@@ -183,12 +193,17 @@ public class Main {
 						if (newItem != null) {
 							maintainItem.items.add(newItem);
 							maintainItem.update(itemsPath);
+							requestStatus = true;
 							System.out.println("Your request for " + titleName + " by " + authorName + " has been prioritized and successfully been added");
 						} else {
 							System.out.println("Your request has been denied!");
 						}
 
 					}
+					else {
+						requestStatus = true;
+					}
+				}
 
 
 
