@@ -5,7 +5,7 @@ public class Book extends PhysicalItem{
 		super(title,author, itemType);
 	}
 	
-	public Book(String title, String author, String itemType, int numOfCopies) {
-		super(title,author, itemType, numOfCopies);
+	public Book(int id,String title, String author, String itemType, int numOfCopies) {
+		super(id, title,author, itemType, numOfCopies);
 	}
 }

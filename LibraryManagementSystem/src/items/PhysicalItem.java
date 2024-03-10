@@ -10,12 +10,13 @@ public abstract class PhysicalItem {
     private String author;
     private String itemType;
 	
-	public PhysicalItem(String title, String author, String itemType, int numOfCopies) {
+	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies) {
 		this.title = title;
 		this.author = author;
-		this.id = ++lastId;        
+		this.id = id;        
 		this.numOfCopies= numOfCopies;
 		this.itemType = itemType;
+		lastId = id;
 	}
 	public PhysicalItem(String title, String author, String itemType) {
 		this.title = title;

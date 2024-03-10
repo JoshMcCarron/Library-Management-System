@@ -27,13 +27,13 @@ public class MaintainPhysicalItems {
 
 			switch(itemType) {
 			case "Book":
-				item = new Book(path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new Book(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			case "Magazine":
-				item = new Magazine(path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new Magazine(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			case "CD":
-				item = new CD(path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new CD(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid item type: " + itemType);
