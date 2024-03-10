@@ -1,6 +1,9 @@
 package structure;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 import actions.Open;
@@ -20,6 +23,7 @@ public class Main {
 		boolean loggedIn = false;
 		String regOrLog="";
 		boolean validRent = false;
+		 LocalDateTime now = LocalDateTime.now();
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
@@ -39,21 +43,21 @@ public class Main {
 
 		//load items
 		maintainItem.load(itemsPath);
-		for(PhysicalItem i: maintainItem.items){
-			System.out.println(i.toString());
-		}
+//		for(PhysicalItem i: maintainItem.items){
+//			System.out.println(i.toString());
+//		}
 
 		//load users
 		maintainUser.load(userPath);
-		for(User u: maintainUser.users){
-			System.out.println(u.toString());
-		}
+//		for(User u: maintainUser.users){
+//			System.out.println(u.toString());
+//		}
 
 		//load rentals
 		maintainRental.load(rentalsPath);
-		for (Rent r: maintainRental.rentals) {
-			System.out.println(r.toString());
-		}
+//		for (Rent r: maintainRental.rentals) {
+//			System.out.println(r.toString());
+//		}
 
 
 
@@ -97,8 +101,9 @@ public class Main {
 				String email = scanner.nextLine();
 				System.out.println("Enter password:");
 				String password = scanner.nextLine();
-
+				//user equals the user object that has matching email and password
 				User user = maintainUser.login(email, password);
+				//if the user is found they are logged, 
 				if (user != null) {
 					// The user has successfully logged in
 					System.out.println("Login successful!");
@@ -108,11 +113,26 @@ public class Main {
 					//just to test if methods are specific to that user
 					System.out.println(user);
 
-					//display list of rentals by that user
+					//REQUIREMENT 3: display list of rentals by that user
 					user.setRentals();
 					for (Rent rentals: user.getRentals()) {
-						System.out.println(rentals.toString());
+
+					    LocalDateTime dueDateTime = rentals.getDateDue().atStartOfDay();
+					    long days = ChronoUnit.DAYS.between(now, dueDateTime);
+					    
+					    if (days <= 1 && days >= 0) {
+					        System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is due in the next day.");
+					    } else if (days < 0) {
+					        System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is overdue.");
+					    } else {
+					        System.out.println(rentals.toString());
+					    }
 					}
+//					for (Rent rentals: user.getRentals()) {
+//						
+//						System.out.println(rentals.toString());
+//					}
+					
 					while (!validRent) {
 					    System.out.println("Enter the title of the item you would like to rent:");
 					    String rentalTitle = scanner.nextLine();
@@ -163,7 +183,7 @@ public class Main {
 						if (newItem != null) {
 							maintainItem.items.add(newItem);
 							maintainItem.update(itemsPath);
-							System.out.println(titleName + " by " + authorName + " has successfully been added");
+							System.out.println("Your request for " + titleName + " by " + authorName + " has been prioritized and successfully been added");
 						} else {
 							System.out.println("Your request has been denied!");
 						}
