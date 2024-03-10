@@ -27,13 +27,13 @@ public class MaintainPhysicalItems {
 
 			switch(itemType) {
 			case "Book":
-				item = new Book(path, path, path);
+				item = new Book(path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			case "Magazine":
-				item = new Magazine(path, path, path);
+				item = new Magazine(path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			case "CD":
-				item = new CD(path, path, path);
+				item = new CD(path, path, path,Integer.parseInt(reader.get("copies")));
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid item type: " + itemType);
@@ -93,5 +93,16 @@ public class MaintainPhysicalItems {
 		Random rand = new Random();
 		int randomNumber = rand.nextInt(10) + 1;
 		return randomNumber;		
+	}
+	
+	public void decreaseCopies(int itemId) {
+		for(PhysicalItem i: items){
+			if (itemId == i.getId()) {
+				i.decreaseCopies();
+				System.out.println(i);
+			}
+		}
+
+	
 	}
 }

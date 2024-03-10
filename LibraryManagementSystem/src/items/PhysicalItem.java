@@ -1,7 +1,6 @@
 package items;
 
 public abstract class PhysicalItem {
-	private static int prevCopies = 20;
     private int numOfCopies;
     private String title;
     private static int lastId = 0;
@@ -11,12 +10,27 @@ public abstract class PhysicalItem {
     private String author;
     private String itemType;
 	
+	public PhysicalItem(String title, String author, String itemType, int numOfCopies) {
+		this.title = title;
+		this.author = author;
+		this.id = ++lastId;        
+		this.numOfCopies= numOfCopies;
+		this.itemType = itemType;
+	}
 	public PhysicalItem(String title, String author, String itemType) {
 		this.title = title;
 		this.author = author;
 		this.id = ++lastId;        
-		this.numOfCopies= 20;
+		this.numOfCopies= 5;
 		this.itemType = itemType;
+	}
+	
+	
+	
+	
+	
+	public void decreaseCopies() {
+		this.numOfCopies--;
 	}
 	public int getNumOfCopies() {
 		return numOfCopies;

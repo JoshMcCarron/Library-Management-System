@@ -7,6 +7,7 @@ import com.csvreader.CsvReader;
 
 import items.PhysicalItem;
 import maintaining.MaintainPhysicalItems;
+import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import userTypes.User;
 
@@ -46,18 +47,27 @@ public class Rent {
 		
 	}
 	
-	public Rent(int userId, String itemTitle, String itemAuthor) throws Exception {
-		this.userId = userId;
+	public Rent(User user, String itemTitle, String itemAuthor, MaintainPhysicalItems maintainItems) throws Exception {
+		this.user = user;
+		System.out.println(user);
+		this.userId = user.getId();	
 		setItemId(itemTitle, itemAuthor);
 		this.dateBorrowed = LocalDate.now();
 		this.dateDue = this.dateBorrowed.plusDays(30);
 		this.dateReturned = null;
 		this.rentalId = ++lastId;
-		setUser(this.userId);
 		setItem(this.itemId);
-		
+		maintainItems.decreaseCopies(this.item.getId());
+//		System.out.println(this.item);
+//		this.item.setNumOfCopies(this.item.getNumOfCopies()-1);
+//		System.out.println(this.item);
+//		System.out.println("*********************");
+//		for(PhysicalItem i: maintainItem.items){
+//			System.out.println(i.toString());
+//		}
+
+//		System.out.println(this.itemId + " copies: " + this.item.getNumOfCopies());
 	}
-	
 	
 	
 	
@@ -90,6 +100,8 @@ public class Rent {
 
 	    }
 	}
+	
+
 	
 	
 

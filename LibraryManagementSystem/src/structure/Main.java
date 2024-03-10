@@ -117,11 +117,13 @@ public class Main {
 					String rentalTitle = scanner.nextLine();
 					System.out.println("Enter the author/creator of the item you would like to rent:");
 					String rentalAuthor = scanner.nextLine();
-					Rent newRental = new Rent(user.getId(), rentalTitle, rentalAuthor);
+					Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
 					
 					if (newRental != null) {
 						maintainRental.rentals.add(newRental);
 						maintainRental.update(rentalsPath);
+						maintainItem.update(itemsPath);
+
 						System.out.println("Succesfully rented");
 					} 
 					
