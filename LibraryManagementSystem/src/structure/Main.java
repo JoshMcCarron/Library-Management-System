@@ -23,6 +23,7 @@ public class Main {
 		boolean loggedIn = false;
 		String regOrLog="";
 		boolean validRent = false;
+		boolean validReturn = false;
 		LocalDateTime now = LocalDateTime.now();
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
@@ -173,6 +174,33 @@ public class Main {
 						}
 					}
 
+					System.out.println("Would you like to return an item? (yes) or (no)");
+					String returnOrNo = scanner.nextLine();
+					if (returnOrNo.equals("yes")){
+						while (!validReturn) {
+							System.out.println("Enter the title of the item you would like to return:");
+							String returnTitle = scanner.nextLine();
+							System.out.println("Enter the author/creator of the item you would like to return:");							String returnAuthor = scanner.nextLine();
+
+
+							for (Rent rental: user.getRentals()) {
+								if(rental.getItem().getTitle().equals(returnTitle) && rental.getItem().getAuthor().equals(returnAuthor)) {
+									validReturn = true;
+									System.out.println(rental);
+									user.returnRental(rental);
+									System.out.println("Successfully returned");
+									break;
+								}
+							}
+
+							if(!validReturn) {
+								System.out.println("Unable to return item");
+							}
+
+						}
+					}
+
+
 
 
 
@@ -180,30 +208,30 @@ public class Main {
 					//NOTE: NEED TO ADD CHECK FOR IF ITEM IS ALREADY IN DATABASE
 					boolean requestStatus = false;
 					while (!requestStatus) {
-					System.out.println("Would you like to request a new book? (yes) or (no)");
-					String reqOrNo = scanner.nextLine();
-					//this will be moved to request class
-					if (reqOrNo.equals("yes")) {
-						System.out.println("Please enter the author:");
-						String authorName = scanner.nextLine();
-						System.out.println("Please enter the title:");
-						String titleName = scanner.nextLine();
-						PhysicalItem newItem = maintainItem.request(authorName, titleName);
+						System.out.println("Would you like to request a new book? (yes) or (no)");
+						String reqOrNo = scanner.nextLine();
+						//this will be moved to request class
+						if (reqOrNo.equals("yes")) {
+							System.out.println("Please enter the author:");
+							String authorName = scanner.nextLine();
+							System.out.println("Please enter the title:");
+							String titleName = scanner.nextLine();
+							PhysicalItem newItem = maintainItem.request(authorName, titleName);
 
-						if (newItem != null) {
-							maintainItem.items.add(newItem);
-							maintainItem.update(itemsPath);
-							requestStatus = true;
-							System.out.println("Your request for " + titleName + " by " + authorName + " has been prioritized and successfully been added");
-						} else {
-							System.out.println("Your request has been denied!");
+							if (newItem != null) {
+								maintainItem.items.add(newItem);
+								maintainItem.update(itemsPath);
+								requestStatus = true;
+								System.out.println("Your request for " + titleName + " by " + authorName + " has been prioritized and successfully been added");
+							} else {
+								System.out.println("Your request has been denied!");
+							}
+
 						}
-
+						else {
+							requestStatus = true;
+						}
 					}
-					else {
-						requestStatus = true;
-					}
-				}
 
 
 

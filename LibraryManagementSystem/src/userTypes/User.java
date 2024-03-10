@@ -88,7 +88,9 @@ public abstract class  User {
 		maintainRental.load(rentalsPath);
 		for (Rent r: maintainRental.rentals) {
 	        if (r.getUserId() == this.id) {
+	        	if(r.getDateReturned()== null) {
 	            rentals.add(r);
+	        	}
 	        }
 		}
 
@@ -153,6 +155,14 @@ public abstract class  User {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+	
+	public void returnRental (Rent rental) throws Exception {
+		rentals.remove(rental);
+		System.out.println(rental.getRentalId());
+		maintainRental.returnDate(rental.getRentalId());
+		maintainRental.update(rentalsPath);
+		
 	}
 
 

@@ -22,10 +22,10 @@ public class MaintainRentals {
 	public String path;
 
 
-	
-	
-	
-	
+
+
+
+
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 
 		reader.readHeaders();
@@ -49,7 +49,7 @@ public class MaintainRentals {
 		}
 
 	}
-	
+
 	public void update(String path) throws Exception{
 		try {		
 			CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');
@@ -65,10 +65,12 @@ public class MaintainRentals {
 				if (r.getRentalId() >= 0) { // Only write to CSV if rental was successfully created
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					csvOutput.write(Integer.toString(r.getRentalId()));
-					csvOutput.write(Integer.toString(r.getUserId()));
 					csvOutput.write(Integer.toString(r.getItemId()));
 					csvOutput.write(r.getDateBorrowed().format(formatter));
 					csvOutput.write(r.getDateDue().format(formatter));
+					if (r.getDateReturned() != null) {
+						csvOutput.write(r.getDateReturned().format(formatter));
+					}
 					csvOutput.endRecord();
 				}
 			}
@@ -77,16 +79,26 @@ public class MaintainRentals {
 			e.printStackTrace();
 		}
 	}
-	
 
-	
+	public void returnDate(int rentalId) {
+		for(Rent r: rentals){
+			if (rentalId == r.getRentalId()) {
+				r.setDateReturned(LocalDate.now());	
+			}
+		}
 
-	
-	
-	
-	
-	
-	
+
+	}
+
+
+
+
+
+
+
+
+
+
 
 
 }
