@@ -19,6 +19,7 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		boolean loggedIn = false;
 		String regOrLog="";
+		boolean validRent = false;
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
@@ -53,8 +54,8 @@ public class Main {
 		for (Rent r: maintainRental.rentals) {
 			System.out.println(r.toString());
 		}
-		
-		
+
+
 
 		//create Manager to manage ALL users
 		Management manager = Management.getManagement();
@@ -106,32 +107,47 @@ public class Main {
 
 					//just to test if methods are specific to that user
 					System.out.println(user);
-					
+
 					//display list of rentals by that user
 					user.setRentals();
 					for (Rent rentals: user.getRentals()) {
 						System.out.println(rentals.toString());
 					}
-					
-					System.out.println("Enter the title of the item you would like to rent:");
-					String rentalTitle = scanner.nextLine();
-					System.out.println("Enter the author/creator of the item you would like to rent:");
-					String rentalAuthor = scanner.nextLine();
-					Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
-					
-					if (newRental != null) {
-						maintainRental.rentals.add(newRental);
-						maintainRental.update(rentalsPath);
-						maintainItem.update(itemsPath);
+					while (!validRent) {
+					    System.out.println("Enter the title of the item you would like to rent:");
+					    String rentalTitle = scanner.nextLine();
+					    System.out.println("Enter the author/creator of the item you would like to rent:");
+					    String rentalAuthor = scanner.nextLine();
 
-						System.out.println("Succesfully rented");
-					} 
-					
-					
-					
-					
-					
-					
+					    boolean itemExists = false;
+					    for(PhysicalItem i: maintainItem.items){
+					        if (i.getTitle().equals(rentalTitle) && i.getAuthor().equals(rentalAuthor)) {
+					            itemExists = true;
+					            validRent = true; 
+					            Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
+					            if (newRental != null) {
+					                maintainRental.rentals.add(newRental);
+					                maintainRental.update(rentalsPath);
+					                maintainItem.update(itemsPath);
+
+					                System.out.println("Successfully rented");
+					                break;
+					            } 
+					        }
+					    }
+
+					    if (!itemExists) {
+					        System.out.println("An item with that name and author does not exist in our database");
+					    }
+					}
+
+
+
+
+
+
+
+
 
 					//simulate request button
 					System.out.println("Would you like to request a new book? (yes) or (no)");
@@ -153,8 +169,8 @@ public class Main {
 						}
 
 					}
-					
-					
+
+
 
 
 

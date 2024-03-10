@@ -1,9 +1,10 @@
 id,title,copies,author,itemType
 1,title1,0,author1,Book
 2,title2,4,author2,Magazine
-3,title3,5,author3,CD
-4,title4,5,author4,Book
-5,title5,5,author5,Magazine
+3,title3,4,author3,CD
+4,title4,4,author4,Book
+5,title5,4,author5,Magazine
 6,title6,4,author6,Book
 7,title7,4,author7,Book
-8,title8,5,author8,Book
+8,title8,4,author8,Book
+9,title9,4,author9,CD
