@@ -113,6 +113,8 @@ public class Main {
 
 					//just to test if methods are specific to that user
 					System.out.println(user);
+					user.calculateFines(maintainRental.rentals);
+					System.out.println("You have a collective fine of $"+ user.getFine());
 
 					//REQUIREMENT 3: display list of rentals by that user
 					user.setRentals();

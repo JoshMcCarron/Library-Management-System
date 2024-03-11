@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import actions.Rent;
 import items.Book;
@@ -19,6 +20,7 @@ public abstract class  User {
 	private ArrayList<Rent> rentals = new ArrayList<>();
 	private ArrayList<Rent> rentalsLifetime = new ArrayList<>();
 	private double penalty;
+	private double fine;
 	private int numOfOverdue;
 	private static int lastId = 0;
 	private int id;
@@ -35,16 +37,17 @@ public abstract class  User {
 		this.password = password;
 		this.id = ++lastId;        
 		this.userType= userType;
+		this.fine=0;
 
 	}
-	
-//	public User(String email, String password, String userType, int id) throws Exception{
-//		this.email = email;
-//		this.password = password;
-//		this.id = this.id;        
-//		this.userType= userType;
-//
-//	}
+
+	//	public User(String email, String password, String userType, int id) throws Exception{
+	//		this.email = email;
+	//		this.password = password;
+	//		this.id = this.id;        
+	//		this.userType= userType;
+	//
+	//	}
 
 	public User(String email, String password, String userType, Management manager) throws Exception{
 		// TODO Auto-generated constructor stub
@@ -57,6 +60,7 @@ public abstract class  User {
 					this.password = password;
 					this.id = ++lastId;        
 					this.userType= userType; 
+					this.fine=0;
 					System.out.println("Your account has successfully been validated");
 				}
 				else {
@@ -74,28 +78,28 @@ public abstract class  User {
 			}
 		}
 	}
-	
-//dont think this method is needed	
-//	public Rent newRent(int userId, String title, String author) {
-//		try {
-//			Rent newRental = new Rent(userId,title, author);
-//			return newRental;
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//			return null;
-//		}
-//	}
 
-	
+	//dont think this method is needed	
+	//	public Rent newRent(int userId, String title, String author) {
+	//		try {
+	//			Rent newRental = new Rent(userId,title, author);
+	//			return newRental;
+	//		} catch (Exception e) {
+	//			System.out.println(e.getMessage());
+	//			return null;
+	//		}
+	//	}
+
+
 	//sets the rentals for a specific user
 	public void setRentals() throws Exception {
 		maintainRental.load(rentalsPath);
 		for (Rent r: maintainRental.rentals) {
-	        if (r.getUserId() == this.id) {
-	        	if(r.getDateReturned()== null) {
-	            rentals.add(r);
-	        	}
-	        }
+			if (r.getUserId() == this.id) {
+				if(r.getDateReturned()== null) {
+					rentals.add(r);
+				}
+			}
 		}
 
 	}
@@ -160,7 +164,7 @@ public abstract class  User {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
+
 	public void returnRental (Rent rental, MaintainPhysicalItems maintainItem) throws Exception {
 		rentals.remove(rental);
 		System.out.println(rental.getRentalId());
@@ -168,9 +172,39 @@ public abstract class  User {
 		maintainRental.update(rentalsPath);
 		maintainItem.increaseCopies(rental.getItemId());
 		maintainItem.update(itemsPath);
-		
-		
+
 	}
+
+	public double getFine() {
+		return fine;
+	}
+	public void calculateFines(ArrayList<Rent> totalRentals) {
+		LocalDate today =  LocalDate.now();
+		//loop through rentals
+		for (Rent r: totalRentals) {
+			//filter rents to only this users rentals (past and current)
+			if(this.getId()==r.getUserId()) {
+				//calculate fine if item has already been returned
+				if(r.getDateReturned()!= null) {
+					//check if dateReturned > dateDue
+					if (r.getDateReturned().isAfter(r.getDateDue())) {
+						//fine calculation
+				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), r.getDateReturned());
+						this.fine = fine + daysBetween * 0.05;
+					}
+				}
+				//calculate fine if item has not been returned yet
+				else {
+					//fine calculation
+					if (today.isAfter(r.getDateDue())) {
+				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), today);
+						this.fine = fine + daysBetween * 0.05;
+					}
+				}
+			}
+		}
+	}
+
 
 
 
