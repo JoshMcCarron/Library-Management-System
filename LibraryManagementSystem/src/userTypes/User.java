@@ -190,7 +190,7 @@ public abstract class  User {
 					if (r.getDateReturned().isAfter(r.getDateDue())) {
 						//fine calculation
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), r.getDateReturned());
-						this.fine = fine + daysBetween * 0.05;
+						this.fine = fine + daysBetween * 0.5;
 					}
 				}
 				//calculate fine if item has not been returned yet
@@ -198,7 +198,14 @@ public abstract class  User {
 					//fine calculation
 					if (today.isAfter(r.getDateDue())) {
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), today);
-						this.fine = fine + daysBetween * 0.05;
+						if (daysBetween>= 15) {
+							System.out.println(r.getItem().getTitle()+ " by "+ r.getItem().getAuthor()+ " is overdue by more than 15 days. Our system deems that this item is lost. $10 has been added to your fine.");
+							this.fine = fine + 10;
+						}
+						else {
+						this.fine = fine + daysBetween * 0.5;
+						}
+
 					}
 				}
 			}
