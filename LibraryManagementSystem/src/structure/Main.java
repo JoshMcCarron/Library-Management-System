@@ -1,6 +1,10 @@
 package structure;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -137,9 +141,9 @@ public class Main {
 					String rentOrNo = scanner.nextLine();
 					if (rentOrNo.equals("yes")){
 						while (!validRent) {
-									for(PhysicalItem i: maintainItem.items){
-										System.out.println(i.toString());
-									}
+							for(PhysicalItem i: maintainItem.items){
+								System.out.println(i.toString());
+							}
 							System.out.println("Enter the title of the item you would like to rent:");
 							String rentalTitle = scanner.nextLine();
 							System.out.println("Enter the author/creator of the item you would like to rent:");
@@ -204,9 +208,44 @@ public class Main {
 
 						}
 					}
+					//simulate online book being pressed
+					boolean validOnlineBook = false;
+					System.out.println("Would you like to open one of our online books? (yes) or (no)");
+					String onlineBookOrNo = scanner.nextLine();
+					if (onlineBookOrNo.equals("yes")) {
+						System.out.println("Cuurently, we have 2 online books:");
+						System.out.println("The Adventure of the Lost Jewel by Author1");
+						System.out.println("The Mystery of the Whispering Woods by Author2");
+
+						while(!validOnlineBook) {
+							System.out.println("Would you like to open The Adventure of the Lost Jewel or The Mystery of the Whispering Woods");
+							String bookOneOrTwo = scanner.nextLine();
+							try {
+								if (bookOneOrTwo.equals("The Adventure of the Lost Jewel")) {
+									//open textfile1
+									validOnlineBook = true;
+									Path path1 = Paths.get("C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\OnlineBook1.txt");
+									String content = Files.readString(path1);
+									System.out.println(content);
+									validOnlineBook = true;
+								}
+								else if (bookOneOrTwo.equals("The Mystery of the Whispering Woods")) {
+									//open textfile2
+									Path path2 = Paths.get("C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\OnlineBook2.txt");						        
+									String content = Files.readString(path2);
+									System.out.println(content);
+									validOnlineBook = true;
+								}
+								else {
+									System.out.println("That is not one of our Online Books!");
+								}
+							}catch(IOException e) {
+								e.printStackTrace();
+							}
 
 
-
+						}
+					}
 
 
 					//simulate request button
@@ -237,6 +276,8 @@ public class Main {
 							requestStatus = true;
 						}
 					}
+
+
 
 
 

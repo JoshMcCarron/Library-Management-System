@@ -3,7 +3,7 @@ id,title,copies,author,itemType,location
 2,title2,3,author2,Magazine,section 3
 3,title3,3,author3,CD,section 4
 4,title4,4,author4,Book,section 1
-5,title5,4,author5,Magazine,section 3
+5,title5,5,author5,Magazine,section 3
 6,title6,4,author6,Book,section 2
 7,title7,4,author7,Book,section 2
 8,title8,4,author8,Book,section 2
