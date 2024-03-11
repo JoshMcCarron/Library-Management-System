@@ -135,6 +135,9 @@ public class Main {
 					String rentOrNo = scanner.nextLine();
 					if (rentOrNo.equals("yes")){
 						while (!validRent) {
+									for(PhysicalItem i: maintainItem.items){
+										System.out.println(i.toString());
+									}
 							System.out.println("Enter the title of the item you would like to rent:");
 							String rentalTitle = scanner.nextLine();
 							System.out.println("Enter the author/creator of the item you would like to rent:");

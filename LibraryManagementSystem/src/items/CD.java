@@ -6,8 +6,8 @@ public class CD extends PhysicalItem{
 		super(title,author, itemType);
 	}
 	
-	public CD(int id,String title, String author, String itemType, int numOfCopies) {
-		super(id,title,author, itemType, numOfCopies);
+	public CD(int id,String title, String author, String itemType, int numOfCopies, String location) {
+		super(id,title,author, itemType, numOfCopies, location);
 	}
 
 }

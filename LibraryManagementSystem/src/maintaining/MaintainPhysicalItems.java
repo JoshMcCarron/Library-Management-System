@@ -27,13 +27,13 @@ public class MaintainPhysicalItems {
 
 			switch(itemType) {
 			case "Book":
-				item = new Book(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new Book(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
 				break;
 			case "Magazine":
-				item = new Magazine(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new Magazine(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
 				break;
 			case "CD":
-				item = new CD(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")));
+				item = new CD(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid item type: " + itemType);
@@ -44,6 +44,7 @@ public class MaintainPhysicalItems {
 			item.setNumOfCopies(Integer.valueOf(reader.get("copies")));
 			item.setAuthor(reader.get("author"));
 			item.setItemType(reader.get("itemType"));
+			item.setLocation(reader.get("location"));
 			items.add(item);
 		}
 	}
@@ -56,6 +57,7 @@ public class MaintainPhysicalItems {
 			csvOutput.write("copies");
 			csvOutput.write("author");
 			csvOutput.write("itemType");
+			csvOutput.write("location");
 			csvOutput.endRecord();
 
 			for(PhysicalItem i: items){
@@ -64,6 +66,7 @@ public class MaintainPhysicalItems {
 				csvOutput.write(String.valueOf(i.getNumOfCopies()));
 				csvOutput.write(i.getAuthor());
 				csvOutput.write(i.getItemType());
+				csvOutput.write(i.getLocation());
 				csvOutput.endRecord();
 			}
 			csvOutput.close();

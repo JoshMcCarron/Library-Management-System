@@ -10,13 +10,14 @@ public abstract class PhysicalItem {
     private String author;
     private String itemType;
 	
-	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies) {
+	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies, String location) {
 		this.title = title;
 		this.author = author;
 		this.id = id;        
 		this.numOfCopies= numOfCopies;
 		this.itemType = itemType;
 		lastId = id;
+		this.location = location;
 	}
 	public PhysicalItem(String title, String author, String itemType) {
 		this.title = title;
@@ -24,6 +25,7 @@ public abstract class PhysicalItem {
 		this.id = ++lastId;        
 		this.numOfCopies= 5;
 		this.itemType = itemType;
+		this.location = "UNKOWN";
 	}
 	
 	
@@ -71,6 +73,12 @@ public abstract class PhysicalItem {
 	
 	@Override
 	public String toString() {
-		return "Item Details ["+this.itemType+": author=" + this.author + ", title=" + this.title + ",Num of Copies=" + this.numOfCopies + "]";
+		return "Item Details ["+this.itemType+": author=" + this.author + ", title=" + this.title + ",Num of Copies=" + this.numOfCopies + ", location=" + this.location +"]";
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
