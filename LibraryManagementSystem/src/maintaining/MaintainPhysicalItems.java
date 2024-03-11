@@ -102,7 +102,16 @@ public class MaintainPhysicalItems {
 				System.out.println(i);
 			}
 		}
-
-	
 	}
+	
+	public void increaseCopies(int itemId) {
+		for(PhysicalItem i: items){
+			if (itemId == i.getId()) {
+				i.increaseCopies();
+				System.out.println(i);
+			}
+		}
+	}
+	
+	
 }

@@ -187,7 +187,7 @@ public class Main {
 								if(rental.getItem().getTitle().equals(returnTitle) && rental.getItem().getAuthor().equals(returnAuthor)) {
 									validReturn = true;
 									System.out.println(rental);
-									user.returnRental(rental);
+									user.returnRental(rental, maintainItem);
 									System.out.println("Successfully returned");
 									break;
 								}

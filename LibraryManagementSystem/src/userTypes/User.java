@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import actions.Rent;
 import items.Book;
+import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
 import structure.Management;
 
@@ -25,6 +26,9 @@ public abstract class  User {
 	private static final String CSV_FILE_PATH = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 	String rentalsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\itemsBorrowed.csv";
 	MaintainRentals maintainRental = new MaintainRentals();
+
+	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
+
 
 	public User(String email, String password, String userType) throws Exception{
 		this.email = email;
@@ -157,11 +161,14 @@ public abstract class  User {
 		this.userType = userType;
 	}
 	
-	public void returnRental (Rent rental) throws Exception {
+	public void returnRental (Rent rental, MaintainPhysicalItems maintainItem) throws Exception {
 		rentals.remove(rental);
 		System.out.println(rental.getRentalId());
 		maintainRental.returnDate(rental.getRentalId());
 		maintainRental.update(rentalsPath);
+		maintainItem.increaseCopies(rental.getItemId());
+		maintainItem.update(itemsPath);
+		
 		
 	}
 

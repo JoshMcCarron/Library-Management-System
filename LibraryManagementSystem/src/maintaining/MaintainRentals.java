@@ -65,6 +65,7 @@ public class MaintainRentals {
 				if (r.getRentalId() >= 0) { // Only write to CSV if rental was successfully created
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 					csvOutput.write(Integer.toString(r.getRentalId()));
+					csvOutput.write(Integer.toString(r.getUserId()));
 					csvOutput.write(Integer.toString(r.getItemId()));
 					csvOutput.write(r.getDateBorrowed().format(formatter));
 					csvOutput.write(r.getDateDue().format(formatter));

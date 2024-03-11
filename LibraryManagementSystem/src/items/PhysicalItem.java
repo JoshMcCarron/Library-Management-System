@@ -33,6 +33,10 @@ public abstract class PhysicalItem {
 	public void decreaseCopies() {
 		this.numOfCopies--;
 	}
+	
+	public void increaseCopies() {
+		this.numOfCopies++;
+	}
 	public int getNumOfCopies() {
 		return numOfCopies;
 	}
