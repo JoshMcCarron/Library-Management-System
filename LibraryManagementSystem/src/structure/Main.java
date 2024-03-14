@@ -145,8 +145,8 @@ public class Main {
 							System.out.println(rentals.toString());
 						}
 					}
-					
-					
+
+
 
 					//Simulate rent process
 					System.out.println("Would you like to rent an item? (yes) or (no)");
@@ -156,34 +156,42 @@ public class Main {
 							for(PhysicalItem i: maintainItem.items){
 								System.out.println(i.toString());
 							}
-							
-							System.out.println("Enter the title of the item you would like to rent:");
-							//rentalTitle will be replaced with a text field with document listener
-					        Search search = new Search(maintainItem.items);
-					        JTextField searchField = search.getSearchField();
 
-					        
-					        //Sample JFrame for search feature
-					        JFrame frame = new JFrame("Search");
-					        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					        frame.getContentPane().add(searchField);
-					        frame.pack();
-					        frame.setVisible(true);
-					        
-					        searchField.addActionListener(new ActionListener() {
-					            @Override
-					            public void actionPerformed(ActionEvent e) {
-					                frame.dispose(); // Close the frame when enter is pressed
-					            }
-					        });//end of sample JFrame for search feature
-					        
-					        //String rentalTitle = scanner.nextLine();
-					        
+							System.out.println("Enter the title of the item you would like to rent (in the text field not console):");
+							//rentalTitle will be replaced with a text field with document listener
+							Search search = new Search(maintainItem.items);
+							JTextField searchField = search.getSearchField();
+
+
+							//Sample JFrame for search feature
+							JFrame frame = new JFrame("Search");
+							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+							frame.getContentPane().add(searchField);
+							frame.pack();
+							frame.setVisible(true);
+
+							searchField.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									frame.dispose(); // Close the frame when enter is pressed
+								}
+							});//end of sample JFrame for search feature
+							boolean preventMoving = false; //this variable is temporary and is so console wont progress until rental title and author are set //enter 1 after title is entered to move on
+							while(!preventMoving) {
+								String progress = scanner.nextLine();
+								if (progress.equals("1")) {
+									preventMoving = true;
+								}
+							}  
+							//String rentalTitle = scanner.nextLine();
+
 							//author will probably be removed
-							System.out.println("Enter the author/creator of the item you would like to rent:");
-							String rentalAuthor = scanner.nextLine();
-							//rentalTitle is after because the console will not wait and rentalTitle will be set to null if put before. I will remove author and assign it based on the title later
+							//System.out.println("Enter the author/creator of the item you would like to rent:");
 							String rentalTitle= search.getSearchedItem();
+							//String rentalAuthor = scanner.nextLine();
+							String rentalAuthor = search.getAuthor();
+
+
 							boolean itemExists = false;
 							//check if item with that author and title exists
 							for(PhysicalItem i: maintainItem.items){
@@ -282,7 +290,7 @@ public class Main {
 
 						}
 					}
-					
+
 					//simulate request button
 					//NOTE: NEED TO ADD CHECK FOR IF ITEM IS ALREADY IN DATABASE
 					boolean requestStatus = false;
@@ -311,23 +319,23 @@ public class Main {
 							requestStatus = true;
 						}
 					}
-					
+
 					//simulate newsletter
 					System.out.println("Our library provides direct subscription access to the NY Times, would you like to subscribe? (A we browser will be opened if yes) ");
 					String newsOrNot = scanner.nextLine();
 					if (newsOrNot.equals("yes")){
-			            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			                try {
-			                    Desktop.getDesktop().browse(new URI("https://www.nytimes.com/subscription"));
-			                } catch (IOException | URISyntaxException e) {
-			                    e.printStackTrace();
-			                }
-			            }
+						if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+							try {
+								Desktop.getDesktop().browse(new URI("https://www.nytimes.com/subscription"));
+							} catch (IOException | URISyntaxException e) {
+								e.printStackTrace();
+							}
+						}
 
 					}
-					
-					
-					
+
+
+
 
 
 

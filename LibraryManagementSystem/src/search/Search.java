@@ -20,6 +20,7 @@ public class Search extends JTextField{
 	private ArrayList<PhysicalItem> items;
     private JTextField searchField;
     private String searchedItem;
+    private String author;
 
 
 	public Search(ArrayList<PhysicalItem> items) {
@@ -48,6 +49,7 @@ public class Search extends JTextField{
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchedItem = searchField.getText();
+                setAuthor(searchedItem);
                 System.out.println("Searched item: " + searchedItem);
                 searchField.setText(""); // Clear the text field
             }
@@ -67,5 +69,19 @@ public class Search extends JTextField{
 
     public String getSearchedItem() {
         return this.searchedItem;
+    }
+    
+    public void setAuthor(String searchedItem) {
+    	for (PhysicalItem item : items) {
+    		if (item.getTitle().equals(searchedItem)) {
+    			author = item.getAuthor();
+    		}
+    		
+    	}
+    	
+    }
+    
+    public String getAuthor() {
+    	return this.author;
     }
 }
