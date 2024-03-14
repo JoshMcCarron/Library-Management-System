@@ -1,6 +1,8 @@
 package structure;
 
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
+import javax.swing.*;
+
 import actions.Open;
 import actions.Rent;
 import items.Book;
@@ -21,6 +25,7 @@ import items.Newsletter;
 import items.OnlineBook;
 import items.PhysicalItem;
 import maintaining.*;
+import search.Search;
 import userTypes.*;
 
 public class Main {
@@ -32,6 +37,7 @@ public class Main {
 		boolean validRent = false;
 		boolean validReturn = false;
 		LocalDateTime now = LocalDateTime.now();
+
 
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
@@ -139,6 +145,8 @@ public class Main {
 							System.out.println(rentals.toString());
 						}
 					}
+					
+					
 
 					//Simulate rent process
 					System.out.println("Would you like to rent an item? (yes) or (no)");
@@ -148,11 +156,34 @@ public class Main {
 							for(PhysicalItem i: maintainItem.items){
 								System.out.println(i.toString());
 							}
+							
 							System.out.println("Enter the title of the item you would like to rent:");
-							String rentalTitle = scanner.nextLine();
+							//rentalTitle will be replaced with a text field with document listener
+					        Search search = new Search(maintainItem.items);
+					        JTextField searchField = search.getSearchField();
+
+					        
+					        //Sample JFrame for search feature
+					        JFrame frame = new JFrame("Search");
+					        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					        frame.getContentPane().add(searchField);
+					        frame.pack();
+					        frame.setVisible(true);
+					        
+					        searchField.addActionListener(new ActionListener() {
+					            @Override
+					            public void actionPerformed(ActionEvent e) {
+					                frame.dispose(); // Close the frame when enter is pressed
+					            }
+					        });//end of sample JFrame for search feature
+					        
+					        //String rentalTitle = scanner.nextLine();
+					        
+							//author will probably be removed
 							System.out.println("Enter the author/creator of the item you would like to rent:");
 							String rentalAuthor = scanner.nextLine();
-
+							//rentalTitle is after because the console will not wait and rentalTitle will be set to null if put before. I will remove author and assign it based on the title later
+							String rentalTitle= search.getSearchedItem();
 							boolean itemExists = false;
 							//check if item with that author and title exists
 							for(PhysicalItem i: maintainItem.items){
@@ -193,7 +224,8 @@ public class Main {
 						while (!validReturn) {
 							System.out.println("Enter the title of the item you would like to return:");
 							String returnTitle = scanner.nextLine();
-							System.out.println("Enter the author/creator of the item you would like to return:");							String returnAuthor = scanner.nextLine();
+							System.out.println("Enter the author/creator of the item you would like to return:");							
+							String returnAuthor = scanner.nextLine();
 
 
 							for (Rent rental: user.getRentals()) {
