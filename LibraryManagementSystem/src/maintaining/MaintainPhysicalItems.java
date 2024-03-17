@@ -2,16 +2,13 @@ package maintaining;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import items.*;
-import userTypes.Faculty;
-import userTypes.NonFaculty;
-import userTypes.Student;
-import userTypes.User;
-import userTypes.Visitor;
+import structure.Management;
+
 
 public class MaintainPhysicalItems {
 	public ArrayList<PhysicalItem> items = new ArrayList<PhysicalItem>();
@@ -27,13 +24,13 @@ public class MaintainPhysicalItems {
 
 			switch(itemType) {
 			case "Book":
-				item = new Book(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
+				item = new Book(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path, path);
 				break;
 			case "Magazine":
-				item = new Magazine(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
+				item = new Magazine(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path,path);
 				break;
 			case "CD":
-				item = new CD(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path);
+				item = new CD(Integer.parseInt(reader.get("id")),path, path, path,Integer.parseInt(reader.get("copies")), path,path);
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid item type: " + itemType);
@@ -45,6 +42,7 @@ public class MaintainPhysicalItems {
 			item.setAuthor(reader.get("author"));
 			item.setItemType(reader.get("itemType"));
 			item.setLocation(reader.get("location"));
+			item.setPurchasable(reader.get("purchasable"));
 			items.add(item);
 		}
 	}
@@ -58,6 +56,7 @@ public class MaintainPhysicalItems {
 			csvOutput.write("author");
 			csvOutput.write("itemType");
 			csvOutput.write("location");
+			csvOutput.write("purchasable");
 			csvOutput.endRecord();
 
 			for(PhysicalItem i: items){
@@ -67,6 +66,9 @@ public class MaintainPhysicalItems {
 				csvOutput.write(i.getAuthor());
 				csvOutput.write(i.getItemType());
 				csvOutput.write(i.getLocation());
+				if (i.getPurchasable()!= null) {
+					csvOutput.write(i.getPurchasable());
+				}
 				csvOutput.endRecord();
 			}
 			csvOutput.close();
@@ -76,10 +78,10 @@ public class MaintainPhysicalItems {
 		}
 	}
 
-	public PhysicalItem request(String author, String title) {
+	public PhysicalItem request(String author, String title, Management manager) {
 		try {
 			PhysicalItem item;
-			if (simulateRequest() > 5) {
+			if (manager.simulateRequest() > 5) {
 				item = new Book(title, author, "Book");
 			}
 			else {
@@ -92,12 +94,8 @@ public class MaintainPhysicalItems {
 		}
 	}
 
-	public int simulateRequest() {
-		Random rand = new Random();
-		int randomNumber = rand.nextInt(10) + 1;
-		return randomNumber;		
-	}
-	
+
+
 	public void decreaseCopies(int itemId) {
 		for(PhysicalItem i: items){
 			if (itemId == i.getId()) {
@@ -106,7 +104,7 @@ public class MaintainPhysicalItems {
 			}
 		}
 	}
-	
+
 	public void increaseCopies(int itemId) {
 		for(PhysicalItem i: items){
 			if (itemId == i.getId()) {
@@ -115,6 +113,6 @@ public class MaintainPhysicalItems {
 			}
 		}
 	}
-	
-	
+
+
 }

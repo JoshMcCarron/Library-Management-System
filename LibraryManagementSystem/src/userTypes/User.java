@@ -18,6 +18,7 @@ public abstract class  User {
 	private String password;
 	boolean validate;
 	private ArrayList<Rent> rentals = new ArrayList<>();
+	//private ArrayList
 	private double fine;
 	private int numOfOverdue = 0;
 	private static int lastId = 0;

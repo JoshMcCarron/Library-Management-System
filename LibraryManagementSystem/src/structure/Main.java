@@ -13,11 +13,12 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.swing.*;
 
 import actions.Open;
+import actions.Purchase;
 import actions.Rent;
 import items.Book;
 import items.Magazine;
@@ -48,6 +49,8 @@ public class Main {
 		String rentalsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\itemsBorrowed.csv";
 		MaintainRentals maintainRental = new MaintainRentals();
 
+		String purchasePath ="C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\purchased.csv";
+		MaintainPurchases maintainPurchase = new MaintainPurchases();
 
 
 
@@ -72,6 +75,7 @@ public class Main {
 		//		for (Rent r: maintainRental.rentals) {
 		//			System.out.println(r.toString());
 		//		}
+		maintainPurchase.load(purchasePath);
 
 
 
@@ -125,8 +129,7 @@ public class Main {
 					loggedIn = true;
 					//everything accessible once logged in here
 
-					//just to test if methods are specific to that user
-					System.out.println(user);
+
 					user.calculateFines(maintainRental.rentals);
 					System.out.println("You have a collective fine of $"+ user.getFine());
 
@@ -145,7 +148,6 @@ public class Main {
 							System.out.println(rentals.toString());
 						}
 					}
-
 
 
 					//Simulate rent process
@@ -255,6 +257,70 @@ public class Main {
 
 						}
 					}
+
+
+					//simulate purchasing item
+					System.out.println("Would you like to purchase one of our items? (yes) or (no)");
+					String purchOrNo = scanner.nextLine();
+
+					if (purchOrNo.equals("yes")) {
+						for(PhysicalItem i: maintainItem.items){
+							if(i.getPurchasable()!= "") {
+								if(Double.parseDouble(i.getPurchasable())<5) {
+									System.out.println("SALE! $"+i.getPurchasable()+": " +i.getTitle() +" by "+i.getAuthor());
+								}
+								else {
+									System.out.println("$"+i.getPurchasable()+": "+i.getTitle() +" by "+i.getAuthor());
+
+								}
+							}
+
+						}
+						boolean validPurch = false;
+						while (!validPurch) {
+							System.out.println("Enter the title of the item you would like to purchase");
+
+							String purchTitle = scanner.nextLine();
+							for(PhysicalItem i: maintainItem.items){
+								if(i.getPurchasable()!= "") {
+									if (purchTitle.equals(i.getTitle())) {
+										validPurch = true;
+										System.out.println("This item is $"+i.getPurchasable()+". How would you like to pay? (debit) (credit)");
+										String debOrCred = scanner.nextLine();
+										if (debOrCred.equals("credit")) {
+											System.out.println("Your purchase is succesful, and your credit card has been charged:$ "+i.getPurchasable());									
+										}
+										else {
+											System.out.println("Your purchase is succesful, and your debit card has been charged:$ "+i.getPurchasable());
+
+										}
+										Purchase newPurchase = new Purchase(user.getId(), i.getId());
+										maintainPurchase.purchases.add(newPurchase);
+										maintainPurchase.update(purchasePath);
+
+									}
+								}
+							}
+
+							if (!validPurch) {
+								System.out.println("That title is not purchasable");
+							}
+						}
+
+					}
+
+
+
+
+
+
+
+
+
+
+
+
+
 					//simulate online book being pressed
 					boolean validOnlineBook = false;
 					System.out.println("Would you like to open one of our online books? (yes) or (no)");
@@ -306,7 +372,7 @@ public class Main {
 							String authorName = scanner.nextLine();
 							System.out.println("Please enter the title:");
 							String titleName = scanner.nextLine();
-							PhysicalItem newItem = maintainItem.request(authorName, titleName);
+							PhysicalItem newItem = maintainItem.request(authorName, titleName, manager);
 
 							if (newItem != null) {
 								maintainItem.items.add(newItem);
@@ -337,8 +403,92 @@ public class Main {
 
 					}
 
+					//simulate manager enable, disable, remove
+					String manageCode = "1357";
+					System.out.println("Are you a manager, if yes enter your code");
+					String userCode = scanner.nextLine();
+					if(manageCode.equals(userCode)) {
+						System.out.println("Would you like to (add) or (remove) any item?");
+						String addOrRem = scanner.nextLine();
+						if (addOrRem.equals("add")) {
+							System.out.println("Enter the author of the item you would like to add");
+							String manageAuthor = scanner.nextLine();
+							System.out.println("Enter the title of the item you would like to add");
+							String manageTitle = scanner.nextLine();
+							boolean validManageType = false;
+							while(!validManageType) {
+								System.out.println("Enter the type of item you would like to add: (Book) (CD) (Magazine)");
+								String manageType = scanner.nextLine();
+								if (!manageType.equals("Book")&&!manageType.equals("CD")&&!manageType.equals("Magazine")) {
+									System.out.println("INVALID TYPE");
+								}
+								else {
+									validManageType = true;
+									Book manageItem = new Book(manageTitle, manageAuthor, manageType);
+									maintainItem.items.add(manageItem);
+									maintainItem.update(itemsPath);
+								}
+							}
 
 
+						}
+						else if(addOrRem.equals("remove")) {
+							boolean validRemTitle = false;
+							while (!validRemTitle) {
+								System.out.println("Please note, the item you remove will no longer be listed in user's rental lists! ");
+								System.out.println("Enter the title of the item you would like to remove");
+								String remTitle = scanner.nextLine();
+								PhysicalItem itemToRemove = null;
+								List<Rent> rentalsToRemove = new ArrayList<>();
+								for(PhysicalItem i: maintainItem.items){
+									if(remTitle.equals(i.getTitle())) {
+										itemToRemove = i;
+										for (Rent r: maintainRental.rentals) {
+											if (r.getItemId()==itemToRemove.getId()) {
+												rentalsToRemove.add(r);
+											}
+										}
+									}
+								}
+								if(itemToRemove!= null) {
+									for (Rent r: rentalsToRemove) {
+										maintainRental.rentals.remove(r);
+									}
+									maintainRental.update(rentalsPath);
+									maintainItem.items.remove(itemToRemove);
+									maintainItem.update(itemsPath);
+									validRemTitle = true;
+									System.out.println("Item succesfully removed!");
+
+								}
+								else {
+									System.out.println("An item with that title is not in our database");
+								}
+							}
+
+
+						}
+					}
+					else {
+						System.out.println("WRONG CODE, YOU ARE NOT THE MANAGER!");
+					}
+
+
+					if(user.getClass().getSimpleName().equals("Faculty")) {
+						System.out.println("THIS WILL BE A LIST OF COURSES USER IS CURRENTLY TEACHING");
+						System.out.println("THIS WILL BE A LIST OF TEXTBOOKS THE USER HAS PREVIOUSLY/IS USED/USING");
+						System.out.println("THIS WILL BE ALL THE TEXTBOOKS WITH NEW EDITION AVAILABLE");
+						//run a randomizer that for each textbook the user had previously used there is a 50% chance that it will no longer be available
+
+					}
+
+					if(user.getClass().getSimpleName().equals("Student")) {
+						System.out.println("THIS WILL BE A LIST OF COURSES USER IS CURRENTLY IN");
+						//add a list of textbooks "virtualCopies" in maintainCourses file.
+						//on load of courses csv, this will be filled if end date had not passed yet
+						System.out.println("THIS WILL BE A LIST OF VIRTUAL TEXTBOOKS");
+
+					}
 
 
 

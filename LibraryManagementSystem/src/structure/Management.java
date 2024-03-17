@@ -29,13 +29,17 @@ public class Management {
         // implementation here
     }
 
-    public void addItem(PhysicalItem item) {
-        // implementation here
-    }
+//    public int addItem() {
+//
+//    }
+    
+	public int simulateRequest() {
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(10) + 1;
+		return randomNumber;		
+	}
 
-    public void enableItem(PhysicalItem item) {
-        // implementation here
-    }
+
 
     public void disableItem(PhysicalItem item) {
         // implementation here

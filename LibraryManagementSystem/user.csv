@@ -6,7 +6,7 @@ id,email,password,userType
 5,sample3@gmail.com,pass456,Student
 6,sampleNF1@gmail.com,adfhwe,Non-Faculty
 7,sampleV1@gmail.com,sdafief,Visitor
-8,sampleF1@gmail.com,faei,Faculty
+8,sampleF1@gmail.com,pass123,Faculty
 9,sampleS5,fdafef,Student
 10,randomemail,defuebh,Student
 11,randSEmail,dfhuehfdf,Student

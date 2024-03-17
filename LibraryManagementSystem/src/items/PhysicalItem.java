@@ -6,11 +6,11 @@ public abstract class PhysicalItem {
     private static int lastId = 0;
     private int id;
     private String location;
-    private boolean purchaseAvailability;
     private String author;
     private String itemType;
+    private String purchasable;
 	
-	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies, String location) {
+	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies, String location, String purchasable) {
 		this.title = title;
 		this.author = author;
 		this.id = id;        
@@ -18,6 +18,7 @@ public abstract class PhysicalItem {
 		this.itemType = itemType;
 		lastId = id;
 		this.location = location;
+		this.purchasable= purchasable;
 	}
 	public PhysicalItem(String title, String author, String itemType) {
 		this.title = title;
@@ -80,5 +81,11 @@ public abstract class PhysicalItem {
 	}
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public String getPurchasable() {
+		return purchasable;
+	}
+	public void setPurchasable(String purchasable) {
+		this.purchasable = purchasable;
 	}
 }

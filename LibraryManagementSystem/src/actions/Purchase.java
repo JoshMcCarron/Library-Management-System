@@ -5,22 +5,54 @@ import items.PhysicalItem;
 import userTypes.User;
 
 public class Purchase {
-    private PhysicalItem item;
-    private double price;
-    private Newsletter resource;
-    private double discount;
-    private String paymentOption;
-    private User user;
+  private int purchaseId;
+  private int userId;
+  private int itemId;
+  private static int lastId = 0;
 
-    public void makePurchase(User user, String paymentOption, double itemPrice, PhysicalItem item) {
-        // implementation here
-    }
 
-    public void makeSubscription(User user, String paymentOption, double price, Newsletter resource) {
-        // implementation here
-    }
+  public Purchase(int userId, int itemId) {
+	  this.purchaseId =  ++lastId;
+	 this.userId = userId;
+	 this.itemId = itemId;
+	  
+  }
+  public Purchase(int purchaseId, int userId, int itemId) {
+	 this.purchaseId = purchaseId;
+	 this.userId = userId;
+	 this.itemId = itemId;
+	  
+  }
 
-    public void offerDiscount(User user, PhysicalItem item, double discount) {
-        // implementation here
-    }
+
+
+public int getPurchaseId() {
+	return purchaseId;
+}
+
+
+public void setPurchaseId(int purchaseId) {
+	this.purchaseId = purchaseId;
+}
+
+
+public int getUserId() {
+	return userId;
+}
+
+
+public void setUserId(int userId) {
+	this.userId = userId;
+}
+
+
+public int getItemId() {
+	return itemId;
+}
+
+
+public void setItemId(int itemId) {
+	this.itemId = itemId;
+}
+  
 }
