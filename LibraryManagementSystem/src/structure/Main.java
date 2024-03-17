@@ -208,6 +208,9 @@ public class Main {
 								if (user.getRentals().size()==10) {
 									System.out.println("You have reached the max amount of rentals! Please return items to rent again");
 								}
+								else if(user.getNumOfOverdue()==3) {
+									System.out.println("You have 3 rentals overdue! Please return items to rent again");
+								}
 								else {
 									Rent newRental = new Rent(user, rentalTitle, rentalAuthor, maintainItem);
 									if (newRental != null) {

@@ -18,10 +18,8 @@ public abstract class  User {
 	private String password;
 	boolean validate;
 	private ArrayList<Rent> rentals = new ArrayList<>();
-	private ArrayList<Rent> rentalsLifetime = new ArrayList<>();
-	private double penalty;
 	private double fine;
-	private int numOfOverdue;
+	private int numOfOverdue = 0;
 	private static int lastId = 0;
 	private int id;
 	private String userType;
@@ -167,7 +165,6 @@ public abstract class  User {
 
 	public void returnRental (Rent rental, MaintainPhysicalItems maintainItem) throws Exception {
 		rentals.remove(rental);
-		System.out.println(rental.getRentalId());
 		maintainRental.returnDate(rental.getRentalId());
 		maintainRental.update(rentalsPath);
 		maintainItem.increaseCopies(rental.getItemId());
@@ -191,6 +188,7 @@ public abstract class  User {
 						//fine calculation
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), r.getDateReturned());
 						this.fine = fine + daysBetween * 0.5;
+						this.numOfOverdue= numOfOverdue+ 1;
 					}
 				}
 				//calculate fine if item has not been returned yet
@@ -210,6 +208,14 @@ public abstract class  User {
 				}
 			}
 		}
+	}
+
+	public int getNumOfOverdue() {
+		return numOfOverdue;
+	}
+
+	public void setNumOfOverdue(int numOfOverdue) {
+		this.numOfOverdue = numOfOverdue;
 	}
 
 
