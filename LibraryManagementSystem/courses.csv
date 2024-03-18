@@ -1,0 +1,4 @@
+courseId,facultyId,studentId1,studentId2,studentId3,textbook,textbookStatus,startDate,endDate,courseName
+1,8,2,1,4,textbook1,new,2023-09-06,2023-12-06,Operating Systems
+2,12,2,3,4,textbook2,new,2024-01-08,2024-04-08,Software Design
+3,8,2,3,5,textbook3,,2024-01-08,2024-04-08,Intro to AI
