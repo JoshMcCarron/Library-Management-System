@@ -9,13 +9,7 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
 import actions.Rent;
-import items.PhysicalItem;
-import structure.Management;
-import userTypes.Faculty;
-import userTypes.NonFaculty;
-import userTypes.Student;
-import userTypes.User;
-import userTypes.Visitor;
+
 
 public class MaintainRentals {
 	public ArrayList<Rent> rentals = new ArrayList<Rent>();

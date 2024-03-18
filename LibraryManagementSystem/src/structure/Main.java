@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -20,6 +21,7 @@ import javax.swing.*;
 import actions.Open;
 import actions.Purchase;
 import actions.Rent;
+import course.Course;
 import items.Book;
 import items.Magazine;
 import items.Newsletter;
@@ -52,7 +54,8 @@ public class Main {
 		String purchasePath ="C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\purchased.csv";
 		MaintainPurchases maintainPurchase = new MaintainPurchases();
 
-
+		String coursePath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\courses.csv";
+		MaintainCourses maintainCourse = new MaintainCourses();
 
 
 
@@ -76,6 +79,8 @@ public class Main {
 		//			System.out.println(r.toString());
 		//		}
 		maintainPurchase.load(purchasePath);
+		maintainCourse.load(coursePath);
+
 
 
 
@@ -405,88 +410,117 @@ public class Main {
 
 					//simulate manager enable, disable, remove
 					String manageCode = "1357";
-					System.out.println("Are you a manager, if yes enter your code");
-					String userCode = scanner.nextLine();
-					if(manageCode.equals(userCode)) {
-						System.out.println("Would you like to (add) or (remove) any item?");
-						String addOrRem = scanner.nextLine();
-						if (addOrRem.equals("add")) {
-							System.out.println("Enter the author of the item you would like to add");
-							String manageAuthor = scanner.nextLine();
-							System.out.println("Enter the title of the item you would like to add");
-							String manageTitle = scanner.nextLine();
-							boolean validManageType = false;
-							while(!validManageType) {
-								System.out.println("Enter the type of item you would like to add: (Book) (CD) (Magazine)");
-								String manageType = scanner.nextLine();
-								if (!manageType.equals("Book")&&!manageType.equals("CD")&&!manageType.equals("Magazine")) {
-									System.out.println("INVALID TYPE");
+					System.out.println("Are you a manager? (yes) or (no)");
+					String isManager = scanner.nextLine();
+					if (isManager.equals("yes")) {
+						System.out.println("Enter your manager code");
+						String userCode = scanner.nextLine();
+
+
+						if(manageCode.equals(userCode)) {
+							System.out.println("Would you like to (add) or (remove) any item?");
+							String addOrRem = scanner.nextLine();
+							if (addOrRem.equals("add")) {
+								System.out.println("Enter the author of the item you would like to add");
+								String manageAuthor = scanner.nextLine();
+								System.out.println("Enter the title of the item you would like to add");
+								String manageTitle = scanner.nextLine();
+								boolean validManageType = false;
+								while(!validManageType) {
+									System.out.println("Enter the type of item you would like to add: (Book) (CD) (Magazine)");
+									String manageType = scanner.nextLine();
+									if (!manageType.equals("Book")&&!manageType.equals("CD")&&!manageType.equals("Magazine")) {
+										System.out.println("INVALID TYPE");
+									}
+									else {
+										validManageType = true;
+										Book manageItem = new Book(manageTitle, manageAuthor, manageType);
+										maintainItem.items.add(manageItem);
+										maintainItem.update(itemsPath);
+									}
 								}
-								else {
-									validManageType = true;
-									Book manageItem = new Book(manageTitle, manageAuthor, manageType);
-									maintainItem.items.add(manageItem);
-									maintainItem.update(itemsPath);
-								}
+
+
 							}
-
-
-						}
-						else if(addOrRem.equals("remove")) {
-							boolean validRemTitle = false;
-							while (!validRemTitle) {
-								System.out.println("Please note, the item you remove will no longer be listed in user's rental lists! ");
-								System.out.println("Enter the title of the item you would like to remove");
-								String remTitle = scanner.nextLine();
-								PhysicalItem itemToRemove = null;
-								List<Rent> rentalsToRemove = new ArrayList<>();
-								for(PhysicalItem i: maintainItem.items){
-									if(remTitle.equals(i.getTitle())) {
-										itemToRemove = i;
-										for (Rent r: maintainRental.rentals) {
-											if (r.getItemId()==itemToRemove.getId()) {
-												rentalsToRemove.add(r);
+							else if(addOrRem.equals("remove")) {
+								boolean validRemTitle = false;
+								while (!validRemTitle) {
+									System.out.println("Please note, the item you remove will no longer be listed in user's rental lists! ");
+									System.out.println("Enter the title of the item you would like to remove");
+									String remTitle = scanner.nextLine();
+									PhysicalItem itemToRemove = null;
+									List<Rent> rentalsToRemove = new ArrayList<>();
+									for(PhysicalItem i: maintainItem.items){
+										if(remTitle.equals(i.getTitle())) {
+											itemToRemove = i;
+											for (Rent r: maintainRental.rentals) {
+												if (r.getItemId()==itemToRemove.getId()) {
+													rentalsToRemove.add(r);
+												}
 											}
 										}
 									}
-								}
-								if(itemToRemove!= null) {
-									for (Rent r: rentalsToRemove) {
-										maintainRental.rentals.remove(r);
+									if(itemToRemove!= null) {
+										for (Rent r: rentalsToRemove) {
+											maintainRental.rentals.remove(r);
+										}
+										maintainRental.update(rentalsPath);
+										maintainItem.items.remove(itemToRemove);
+										maintainItem.update(itemsPath);
+										validRemTitle = true;
+										System.out.println("Item succesfully removed!");
+
 									}
-									maintainRental.update(rentalsPath);
-									maintainItem.items.remove(itemToRemove);
-									maintainItem.update(itemsPath);
-									validRemTitle = true;
-									System.out.println("Item succesfully removed!");
+									else {
+										System.out.println("An item with that title is not in our database");
+									}
+								}
 
-								}
-								else {
-									System.out.println("An item with that title is not in our database");
-								}
+
 							}
-
-
 						}
-					}
-					else {
-						System.out.println("WRONG CODE, YOU ARE NOT THE MANAGER!");
+						else {
+							System.out.println("WRONG CODE, YOU ARE NOT THE MANAGER!");
+						}
 					}
 
 
 					if(user.getClass().getSimpleName().equals("Faculty")) {
-						System.out.println("THIS WILL BE A LIST OF COURSES USER IS CURRENTLY TEACHING");
-						System.out.println("THIS WILL BE A LIST OF TEXTBOOKS THE USER HAS PREVIOUSLY/IS USED/USING");
-						System.out.println("THIS WILL BE ALL THE TEXTBOOKS WITH NEW EDITION AVAILABLE");
-						//run a randomizer that for each textbook the user had previously used there is a 50% chance that it will no longer be available
+						System.out.println("Below is a list of courses you are currently teaching:");
+						for (Course c: maintainCourse.courses) {
+							if (c.getFacultyId()== user.getId()&& LocalDate.now().isBefore(c.getEndDate())) {
+								System.out.println(c.getCourseName()+ ": started on "+ c.getStartDate()+ " ends on "+ c.getEndDate());
+							}
+						}
+						System.out.println("Below is a list of textbooks you are using or have used:");
+						for (Course c: maintainCourse.courses) {
+							Random random = new Random();
+							if (c.getFacultyId()== user.getId()) {
+								if(random.nextBoolean()) {
+									System.out.println(c.getTextbook()+ ": Sorry, but currently this textbook is not available. We will notify our management to help procure this textbook for you");
+								}
+								else if (c.getTextbookStatus().equals("new")) {
+									System.out.println(c.getTextbook()+ ": A NEW EDITION IS AVAILABLE");
+								}
+								else {
+									System.out.println(c.getTextbook());
+								}
+							}
+						}
+
 
 					}
 
 					if(user.getClass().getSimpleName().equals("Student")) {
-						System.out.println("THIS WILL BE A LIST OF COURSES USER IS CURRENTLY IN");
-						//add a list of textbooks "virtualCopies" in maintainCourses file.
-						//on load of courses csv, this will be filled if end date had not passed yet
-						System.out.println("THIS WILL BE A LIST OF VIRTUAL TEXTBOOKS");
+						System.out.println("Currently these are the virtual textbook copies available to you:");
+						for (Course c: maintainCourse.courses) {
+							if (user.getId() == c.getStudentId1()|| user.getId() == c.getStudentId3() || user.getId() == c.getStudentId3()) {
+								if(LocalDate.now().isBefore(c.getEndDate())){
+									System.out.println(c.getTextbook()+": Available until "+ c.getEndDate());
+								}
+							}
+						}
+
 
 					}
 
