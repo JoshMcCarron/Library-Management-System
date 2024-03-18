@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Management {
 	private static Management singleManageTeam;
+	private final String managerCode = "1357";
 	private Management() {
 		
 	}
@@ -44,4 +45,7 @@ public class Management {
     public void disableItem(PhysicalItem item) {
         // implementation here
     }
+	public String getManagerCode() {
+		return managerCode;
+	}
 }

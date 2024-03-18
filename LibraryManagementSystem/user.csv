@@ -17,3 +17,4 @@ id,email,password,userType
 16,sampleVisitEmail,dwidjwd,Visitor
 17,randoVisitorEm,asdjwi,Visitor
 18,newSEmail,pass1234,Student
+19,visitor7@gmail.com,pass123,Visitor

@@ -10,5 +10,7 @@ id,title,copies,author,itemType,location,purchasable
 9,title9,4,author9,CD,section 4,
 10,title10,4,author10,Book,section 2,12
 12,title12,5,author12,Book,UNKOWN,
-13,title13,5,author13,Book,UNKOWN,
-14,title14,5,author14,Book,UNKOWN,
+13,title13,4,author13,Book,UNKOWN,
+14,title14,2,author14,Book,UNKOWN,
+15,title15,4,author15,Book,UNKOWN,
+16,title16,5,author16,CD,UNKOWN

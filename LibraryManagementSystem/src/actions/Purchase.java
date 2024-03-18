@@ -21,6 +21,7 @@ public class Purchase {
 	 this.purchaseId = purchaseId;
 	 this.userId = userId;
 	 this.itemId = itemId;
+	 lastId = purchaseId;
 	  
   }
 
