@@ -36,12 +36,12 @@ public class Main {
 		//temporarily using scanner but this will be the text boxes and buttons from the GUI
 		Scanner scanner = new Scanner(System.in);
 		boolean loggedIn = false;
-		String regOrLog="";
 		boolean validRent = false;
 		boolean validReturn = false;
 		LocalDateTime now = LocalDateTime.now();
 
 
+		//these are the paths to each of the csv files. Please edit to the location of yours!
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
 
@@ -57,48 +57,44 @@ public class Main {
 		String coursePath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\courses.csv";
 		MaintainCourses maintainCourse = new MaintainCourses();
 
-
-
-
-
-		//load items
+		//calls method in each maintain class to create objects for each csv entry
 		maintainItem.load(itemsPath);
-		//		for(PhysicalItem i: maintainItem.items){
-		//			System.out.println(i.toString());
-		//		}
-
-		//load users
 		maintainUser.load(userPath);
-		//		for(User u: maintainUser.users){
-		//			System.out.println(u.toString());
-		//		}
-
-		//load rentals
 		maintainRental.load(rentalsPath);
-		//		for (Rent r: maintainRental.rentals) {
-		//			System.out.println(r.toString());
-		//		}
 		maintainPurchase.load(purchasePath);
 		maintainCourse.load(coursePath);
 
-
-
-
 		//create Manager to manage ALL users
+		//as one manager controls all other users, it is made a Singleton 
 		Management manager = Management.getManagement();
 
-		//register or log in
-		while(!regOrLog.equals("register") && !regOrLog.equals("login")) {
 
-			System.out.println("Would you like to (register) or (login)?");
-			regOrLog = scanner.nextLine();
-			if (!regOrLog.equals("register")&& !regOrLog.equals("login")) {
-				System.out.println("Invalid input");
+		//check if user is registering or logging in
+		String regOrLog = registerOrLogin(scanner);
+		while (!loggedIn) {
+			if (regOrLog.equals("register")) {
+				register(scanner, maintainUser, manager, userPath);
+			} else if (regOrLog.equals("login")){
+				login(scanner, maintainUser);
+			}
+			else {
+				System.out.println("Invalid option. Please enter either 'register' or 'login'.");
 			}
 		}
+		
+		//get which button the user would like to press
+		String whichFunctionality = userChoice(scanner);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 		while (!loggedIn) {
-
-
 			//register
 			if (regOrLog.equals("register")) {
 				System.out.println("Enter user type (Student, Faculty, Non-Faculty, Visitor):");
@@ -551,8 +547,77 @@ public class Main {
 			}
 		}
 
+		//close scanner
 		scanner.close();
 
 
 	}
+	//method to check if user is registering or logging in
+	public static String registerOrLogin(Scanner scanner) {
+		//variable for getting userInput
+		String regOrLog="";
+		//loop through until user chooses register or login
+		while(!regOrLog.equals("register") && !regOrLog.equals("login")) {
+			System.out.println("Would you like to (register) or (login)?");
+			//get user input
+			regOrLog = scanner.nextLine();
+			if (!regOrLog.equals("register")&& !regOrLog.equals("login")) {
+				System.out.println("Invalid input");
+			}
+		}
+		return regOrLog;
+	}//end of registerOrLogin method
+
+	//method to handle registering
+	public static boolean register(Scanner scanner, MaintainUser maintainUser, Management manager, String userPath) throws Exception {
+		boolean loggedIn = false;
+		//get user details
+		System.out.println("Enter user type (Student, Faculty, Non-Faculty, Visitor):");
+		String userType = scanner.nextLine();
+		System.out.println("Enter email:");
+		String email = scanner.nextLine();
+		System.out.println("Enter password:");
+		String password = scanner.nextLine();
+
+		//create a user object with the user's input
+		User user = maintainUser.register(email, password, userType, manager);
+
+		//check if user was actually created and display appropriate messages accordingly
+		if (user != null) {
+			//if user exists they are added to the list of users, and written into the user csv file
+			maintainUser.users.add(user);
+			maintainUser.update(userPath);
+			System.out.println(userType + " registered successfully with id: " + user.getId());
+			loggedIn = true;
+		} else {
+			System.out.println("Registration failed. Try again.");
+		}
+
+		return loggedIn;
+	}//end of register method
+
+	public static boolean login(Scanner scanner, MaintainUser maintainUser) {
+		boolean loggedIn = false;
+		//get user info
+		System.out.println("Enter email:");
+		String email = scanner.nextLine();
+		System.out.println("Enter password:");
+		String password = scanner.nextLine();
+		//user equals the user object that has matching email and password
+		User user = maintainUser.login(email, password);
+		//if the user is found they are logged, 
+		if (user != null) {
+			// The user has successfully logged in
+			System.out.println("Login successful!");
+			loggedIn = true;
+		}
+
+		return loggedIn;
+	}//end of login method
+	
+	public static String userChoice(Scanner scanner) {
+		return "";
+	}//end of userChoice method
+
+
 }

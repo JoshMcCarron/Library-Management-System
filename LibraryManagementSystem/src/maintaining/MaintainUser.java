@@ -23,16 +23,16 @@ public class MaintainUser {
 
 			switch(userType) {
 			case "Student":
-				user = new Student(path, path, path);
+				user = new Student(Integer.parseInt(reader.get("id")),path, path, path);
 				break;
 			case "Faculty":
-				user = new Faculty(path, path, path);
+				user = new Faculty(Integer.parseInt(reader.get("id")),path, path, path);
 				break;
 			case "Non-Faculty":
-				user = new NonFaculty(path, path, path);
+				user = new NonFaculty(Integer.parseInt(reader.get("id")),path, path, path);
 				break;
 			case "Visitor":
-				user = new Visitor(path, path, path);
+				user = new Visitor(Integer.parseInt(reader.get("id")),path, path, path);
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid user type: " + userType);

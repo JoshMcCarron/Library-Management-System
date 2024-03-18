@@ -4,8 +4,8 @@ import structure.Management;
 
 public class Visitor extends User{
 
-	public Visitor(String email, String password, String userType) throws Exception {
-		super(email, password, userType);
+	public Visitor(int id,String email, String password, String userType) throws Exception {
+		super(id, email, password, userType);
 		// TODO Auto-generated constructor stub
 	}
 	

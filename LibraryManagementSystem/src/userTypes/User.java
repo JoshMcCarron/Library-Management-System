@@ -31,12 +31,13 @@ public abstract class  User {
 	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
 
 
-	public User(String email, String password, String userType) throws Exception{
+	public User(int id, String email, String password, String userType) throws Exception{
 		this.email = email;
 		this.password = password;
-		this.id = ++lastId;        
+		this.id = id;        
 		this.userType= userType;
 		this.fine=0;
+		lastId = id;
 
 	}
 
