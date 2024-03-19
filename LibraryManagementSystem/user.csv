@@ -20,3 +20,4 @@ id,email,password,userType
 19,visitor7@gmail.com,pass123,Visitor
 20,testingVisitor@gmail.com,Aa1!,Visitor
 21,TestingStudent@my.yorku.ca,Pass1!,Student
+22,randomtest@gmail.com,Pass123!,Faculty

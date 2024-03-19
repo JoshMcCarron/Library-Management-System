@@ -72,6 +72,8 @@ public class LoginPage extends JFrame implements ActionListener {
             User user = maintainUser.login(email, password);
     		if (user != null) {
     			// The user has successfully logged in
+    			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
     			AppGUI mainPage = new AppGUI();
     			 frame.dispose();
     		}

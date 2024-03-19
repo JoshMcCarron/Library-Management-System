@@ -144,6 +144,8 @@ public class CreateAccountPage implements ActionListener {
 						e1.printStackTrace();
 					}
 	    			// The user has successfully registered and auto logged in.
+					JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
 	    			AppGUI mainPage = new AppGUI();
 	    			 frame.dispose();
 
