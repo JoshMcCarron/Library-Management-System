@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 
 import maintaining.MaintainUser;
+import structure.Management;
 import userTypes.User;
 
 import java.awt.event.ActionEvent;
@@ -21,10 +22,14 @@ public class LoginPage extends JFrame implements ActionListener {
     private String password;
     //variables needed for functionality
     private MaintainUser maintainUser;
+    private Management manager;
+    private String userPath;
 
-    public LoginPage(MaintainUser maintainUser) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath) {
     	//initialize variables
     	this.maintainUser = maintainUser;
+    	this.manager = manager;
+    	this.userPath = userPath;
     	
     	
     	
@@ -74,11 +79,10 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Invalid email or password. Please try again.");
     			userText.setText("");
                 passwordText.setText("");
-    		}
-            
+    		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath);
             frame.dispose();
         }
     }

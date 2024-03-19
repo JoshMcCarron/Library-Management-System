@@ -79,7 +79,7 @@ public class Main {
 		User user = null;
 		
 		//load GUI
-		LoginPage login = new LoginPage(maintainUser);
+		LoginPage login = new LoginPage(maintainUser, manager, userPath);
 
 
 		//REQ1

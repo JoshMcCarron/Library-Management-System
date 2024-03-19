@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 
 import maintaining.MaintainUser;
+import structure.Management;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,12 +18,21 @@ public class RegisterPage implements ActionListener {
     JButton facultyB = new JButton("Faculty Staff");
     JButton nonFacultyB = new JButton("Non-Faculty Staff");
     JButton loginButton = new JButton("Back to Login");
-    String accountType;
+    String userType;
     
     //variables needed for functionality
     private MaintainUser maintainUser;
+    private Management manager;
+    private String userPath;
 
-    public RegisterPage(MaintainUser maintainUser) {
+    public RegisterPage(MaintainUser maintainUser, Management manager, String userPath) {
+    	//initialize variables
+    	this.maintainUser = maintainUser;
+    	this.manager = manager;
+    	this.userPath = userPath;
+    	
+    	
+    	
         frame.setSize(400, 250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
@@ -55,19 +65,19 @@ public class RegisterPage implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == visitorB) {
-            accountType = "Visitor";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser);
+            userType = "Visitor";
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath);
         } else if (e.getSource() == studentB) {
-            accountType = "Student";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser);
+        	userType = "Student";
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath);
         } else if (e.getSource() == facultyB) {
-            accountType = "Faculty Staff";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser);
+        	userType = "Faculty";
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath);
         } else if (e.getSource() == nonFacultyB) {
-            accountType = "Non-Faculty Staff";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser);
+        	userType = "Non-Faculty";
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath);
         } else if (e.getSource() == loginButton) {
-            LoginPage loginPage = new LoginPage(maintainUser);
+            LoginPage loginPage = new LoginPage(maintainUser, manager, userPath);
 
         }
 
