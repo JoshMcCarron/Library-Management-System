@@ -22,6 +22,7 @@ import actions.Open;
 import actions.Purchase;
 import actions.Rent;
 import course.Course;
+import gui.LoginPage;
 import items.Book;
 import items.Magazine;
 import items.Newsletter;
@@ -34,6 +35,8 @@ import userTypes.*;
 public class Main {
 	public static void main(String[]args) throws Exception{
 		//temporarily using scanner but this will be the text boxes and buttons from the GUI
+		//uncomment below line to view GUI
+		
 		Scanner scanner = new Scanner(System.in);
 		boolean loggedIn = false;
 		boolean quit = false;
@@ -74,6 +77,9 @@ public class Main {
 
 		//declare user to be used
 		User user = null;
+		
+		//load GUI
+		LoginPage login = new LoginPage(maintainUser);
 
 
 		//REQ1
