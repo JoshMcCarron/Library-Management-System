@@ -68,9 +68,15 @@ public class LoginPage extends JFrame implements ActionListener {
     		if (user != null) {
     			// The user has successfully logged in
     			AppGUI mainPage = new AppGUI();
+    			 frame.dispose();
+    		}
+    		else {
+    			JOptionPane.showMessageDialog(null, "Invalid email or password. Please try again.");
+    			userText.setText("");
+                passwordText.setText("");
     		}
             
-            frame.dispose();
+           
         } else if (e.getSource() == registerButton) {
             RegisterPage regPage = new RegisterPage(maintainUser);
             frame.dispose();
