@@ -379,6 +379,17 @@ public class Main {
 				break;
 			}
 		}
+		
+//		Iterator<Rent> rentalIterator = user.getRentals().iterator();
+//		while(rentalIterator.hasNext()) {
+//		    Rent rental = rentalIterator.next();
+//		    if(rental.getItem().getTitle().equals(returnTitle) && rental.getItem().getAuthor().equals(returnAuthor)) {
+//		        validReturn = true;
+//		        user.returnRental(rental, maintainItem);
+//		        System.out.println("Successfully returned");
+//		        break;
+//		    }
+//		}
 		//if item is not in user rentals it cannot be returned
 		if(!validReturn) {
 			System.out.println("Unable to return item");
@@ -613,47 +624,52 @@ public class Main {
 			}
 			//removing item functionality
 			else if(addOrRem.equals("remove")) {
-				boolean validRemTitle = false;
-				while (!validRemTitle) {
-					System.out.println("Please note, the item you remove will no longer be listed in user's rental lists! ");
-					System.out.println("Enter the title of the item you would like to remove");
-					String remTitle = scanner.nextLine();
-					PhysicalItem itemToRemove = null;
-					//list of rentals to remove as if an item does not exist, users cannot rent it
-					List<Rent> rentalsToRemove = new ArrayList<>();
-					//loop through items to see if item user wishes to remove exists
-					for(PhysicalItem i: maintainItem.items){
-						if(remTitle.equals(i.getTitle())) {
-							itemToRemove = i; //sets item to remove
-							//loop through rentals and add each rental that matches the item that is removed to the remove list
-							for (Rent r: maintainRental.rentals) {
-								if (r.getItemId()==itemToRemove.getId()) {
-									rentalsToRemove.add(r);
-								}
-							}
-						}
-					}
-					//if user is removing an item
-					if(itemToRemove!= null) {
-						//loop through rentals and remove each rental that includes item
-						for (Rent r: rentalsToRemove) {
-							maintainRental.rentals.remove(r);
-						}
-						//update the rentals csv, remove the item from the items list, and finally update the item csv
-						maintainRental.update(rentalsPath);
-						maintainItem.items.remove(itemToRemove);
-						maintainItem.update(itemsPath);
-						validRemTitle = true;
-						System.out.println("Item succesfully removed!");
+			    boolean validRemTitle = false;
+			    while (!validRemTitle) {
+			        System.out.println("Please note, the item you remove will no longer be listed in user's rental lists! ");
+			        System.out.println("Enter the title of the item you would like to remove");
+			        String remTitle = scanner.nextLine();
+			        PhysicalItem itemToRemove = null;
+			        //list of rentals to remove as if an item does not exist, users cannot rent it
+			        List<Rent> rentalsToRemove = new ArrayList<>();
+			        //iterate through items to see if item user wishes to remove exists
+			        Iterator<PhysicalItem> itemIterator = maintainItem.items.iterator();
+			        while(itemIterator.hasNext()){
+			        	//item is set to the next item in the iteration
+			            PhysicalItem i = itemIterator.next();
+			            if(remTitle.equals(i.getTitle())) {
+			                itemToRemove = i; //sets item to remove
+			                //iterate through rentals and add each rental that matches the item that is removed to the remove list
+			                Iterator<Rent> rentalIterator = maintainRental.rentals.iterator();
+			                while(rentalIterator.hasNext()){
+			                    Rent r = rentalIterator.next();
+			                    if (r.getItemId()==itemToRemove.getId()) {
+			                        rentalsToRemove.add(r);
+			                    }
+			                }
+			            }
+			        }
+			        //if user is removing an item
+			        if(itemToRemove!= null) {
+			            //iterate through rentals and remove each rental that includes item
+			            Iterator<Rent> rentalToRemoveIterator = rentalsToRemove.iterator();
+			            while(rentalToRemoveIterator.hasNext()){
+			                Rent r = rentalToRemoveIterator.next();
+			                maintainRental.rentals.remove(r);
+			            }
+			            //update the rentals csv, remove the item from the items list, and finally update the item csv
+			            maintainRental.update(rentalsPath);
+			            maintainItem.items.remove(itemToRemove);
+			            maintainItem.update(itemsPath);
+			            validRemTitle = true;
+			            System.out.println("Item succesfully removed!");
 
-					}
-					//if user tries to remove item that doesn't exist
-					else {
-						System.out.println("An item with that title is not in our database");
-					}
-				}
-
-
+			        }
+			        //if user tries to remove item that doesn't exist
+			        else {
+			            System.out.println("An item with that title is not in our database");
+			        }
+			    }
 			}
 		}
 		else {
