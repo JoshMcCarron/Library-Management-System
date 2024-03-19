@@ -13,4 +13,7 @@ id,title,copies,author,itemType,location,purchasable
 13,title13,4,author13,Book,UNKOWN,
 14,title14,2,author14,Book,UNKOWN,
 15,title15,4,author15,Book,UNKOWN,
-16,title16,5,author16,CD,UNKOWN
+16,title16,5,author16,CD,UNKOWN,
+17,title17,5,author17,Book,UNKOWN
+18,title18,5,author18,CD,UNKOWN
+19,title19,5,author19,Magazine,UNKOWN

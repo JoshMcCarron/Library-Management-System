@@ -24,6 +24,8 @@ import actions.Rent;
 import course.Course;
 import gui.LoginPage;
 import items.Book;
+import items.CD;
+import items.ItemKeeper;
 import items.Magazine;
 import items.Newsletter;
 import items.OnlineBook;
@@ -579,10 +581,31 @@ public class Main {
 					}
 					//if everything is valid, add item to items list and write to csv file
 					else {
+						ItemKeeper ik = new ItemKeeper();
 						validManageType = true;
-						Book manageItem = new Book(manageTitle, manageAuthor, manageType);
-						maintainItem.items.add(manageItem);
-						maintainItem.update(itemsPath);
+						//acts as a client for the facade pattern
+						switch(manageType) {
+						case "Book":
+							Book book = ik.createBook(manageTitle, manageAuthor);
+							maintainItem.items.add(book);
+							maintainItem.update(itemsPath);
+							break;
+						case "Magazine":
+							Magazine magazine = ik.createMagazine(manageTitle, manageAuthor);
+							maintainItem.items.add(magazine);
+							maintainItem.update(itemsPath);
+							break;
+						case "CD":
+							CD cd = ik.createCD(manageTitle, manageAuthor);
+							maintainItem.items.add(cd);
+							maintainItem.update(itemsPath);
+							break;
+						default:
+							throw new IllegalArgumentException("Invalid item type: " + manageType);
+						}
+//						Book manageItem = new Book(manageTitle, manageAuthor, manageType);
+//						maintainItem.items.add(manageItem);
+//						maintainItem.update(itemsPath);
 					}
 				}
 
