@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 
 import maintaining.MaintainCourses;
+import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
@@ -28,14 +29,18 @@ public class LoginPage extends JFrame implements ActionListener {
     private String userPath;
     private MaintainRentals maintainRental;
     private MaintainCourses maintainCourse;
+    private MaintainPhysicalItems maintainItem;
+    private String itemsPath;
 
-    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
     	this.userPath = userPath;
     	this.maintainRental = maintainRental;
     	this.maintainCourse = maintainCourse;
+    	this.maintainItem = maintainItem;
+    	this.itemsPath = itemsPath;
     	
     	
     	
@@ -81,7 +86,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, maintainRental, maintainCourse);
+					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -95,7 +100,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath);
             frame.dispose();
         }
     }

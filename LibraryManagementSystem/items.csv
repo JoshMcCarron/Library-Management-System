@@ -15,3 +15,5 @@ id,title,copies,author,itemType,location,purchasable
 15,title15,4,author15,Book,UNKOWN,
 16,title16,5,author16,CD,UNKOWN,
 17,title17,5,author17,Book,UNKOWN,
+18,title18,5,author18,Book,UNKOWN,
+19,title19,5,author19,Book,UNKOWN

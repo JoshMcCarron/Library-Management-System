@@ -81,7 +81,7 @@ public class Main {
 		User user = null;
 		
 		//load GUI
-		LoginPage login = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse);
+		LoginPage login = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
 
 
 		//REQ1

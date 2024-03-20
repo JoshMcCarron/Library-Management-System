@@ -5,8 +5,11 @@ import javax.swing.event.ListSelectionListener;
 
 import actions.Rent;
 import course.Course;
+import items.PhysicalItem;
 import maintaining.MaintainCourses;
+import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
+import structure.Management;
 import userTypes.User;
 
 import java.awt.*;
@@ -21,11 +24,17 @@ public class AppGUI extends JFrame implements ActionListener {
 	private User user;
 	private MaintainRentals maintainRental;
 	private MaintainCourses maintainCourse;
+	private MaintainPhysicalItems maintainItem;
+	private Management manager;
+	String itemsPath;
 
-	public AppGUI(User user, MaintainRentals maintainRental, MaintainCourses maintainCourse) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
+		this.maintainItem = maintainItem;
+		this.manager = manager;
+		this.itemsPath = itemsPath;
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -197,7 +206,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		requestPanel.setBorder(BorderFactory.createTitledBorder("Request New Item"));
 
 		//Use values from "author" and "bookName" to create a request for backend
-		JLabel authorLabel = new JLabel("Enter Author Full Name:");
+		JLabel authorLabel = new JLabel("Enter Author Name:");
 		JPanel authorPanel = new JPanel();
 		JTextField author = new JTextField();
 		author.setPreferredSize(new Dimension(600, 70));
@@ -213,18 +222,30 @@ public class AppGUI extends JFrame implements ActionListener {
 		JLabel priorityStatusLabel = new JLabel();
 		final boolean[] requestButtonClicked = {false};
 		JButton submitRequest = new JButton("Request");
+		//button for submitting request
 		submitRequest.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requestButtonClicked[0] = true;
-				if(requestButtonClicked[0]) {
-					boolean priority = true; // This is just for display. Add skeleton code. If item is priority, shows added, else it shows denied
-					if (priority) {
-						priorityStatusLabel.setText("Item Added");
-					} else {
-						priorityStatusLabel.setText("Item Denied");
+				//try to create a new item. The manager will decide
+				PhysicalItem newItem = maintainItem.request(author.getText(), bookName.getText(), manager);
+				if (newItem != null) {
+					maintainItem.items.add(newItem);
+					try {
+						maintainItem.update(itemsPath);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+					priorityStatusLabel.setText("Your request for " +  bookName.getText() + " by " + author.getText() + " has been prioritized and successfully been added");
+					//if manager does not add item
+				} else {
+					priorityStatusLabel.setText("Your request has been denied!");
+					author.setText("");
+					bookName.setText("");
 				}
+
+				
+
 			}
 
 		});
