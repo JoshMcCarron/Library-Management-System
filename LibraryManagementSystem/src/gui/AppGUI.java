@@ -432,16 +432,27 @@ public class AppGUI extends JFrame implements ActionListener {
 		submitReturn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				returnButtonPressed[0] = true;
-				if(returnButtonPressed[0]) {
-					boolean returned = true; //  This is just for display. Add skeleton code. If item is priority, shows returned, else shows unable
-					if (returned) {
+				boolean validReturn = false;
+				for (Rent rental: user.getRentals()) {
+					//if item exists return it
+					if(rental.getItem().getTitle().equals(bookName.getText()) && rental.getItem().getAuthor().equals(author.getText())) {
+						
+						//method in user to returnRental
+						try {
+							validReturn = true;
+							user.returnRental(rental, maintainItem);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						returnStatusLabel.setText("Item Returned");
-					} else {
-						returnStatusLabel.setText("Unable to return");
+						break;
 					}
 				}
+				if(!validReturn) {
+					returnStatusLabel.setText("Unable to return item");
+				}
+				
 
 			}
 		});
