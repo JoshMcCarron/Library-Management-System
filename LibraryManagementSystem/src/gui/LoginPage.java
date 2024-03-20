@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import maintaining.MaintainCourses;
 import maintaining.MaintainPhysicalItems;
+import maintaining.MaintainPurchases;
 import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
@@ -32,8 +33,10 @@ public class LoginPage extends JFrame implements ActionListener {
     private MaintainPhysicalItems maintainItem;
     private String itemsPath;
     private String rentalsPath;
+	private String purchasePath;
+	private MaintainPurchases maintainPurchase;
 
-    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath,String purchasePath, MaintainPurchases maintainPurchase) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
@@ -43,7 +46,8 @@ public class LoginPage extends JFrame implements ActionListener {
     	this.maintainItem = maintainItem;
     	this.itemsPath = itemsPath;
     	this.rentalsPath = rentalsPath;
-    	
+		this.purchasePath = purchasePath;
+		this.maintainPurchase = maintainPurchase;
     	
     	
         frame.setSize(400, 250);
@@ -88,7 +92,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
+					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -102,7 +106,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase);
             frame.dispose();
         }
     }

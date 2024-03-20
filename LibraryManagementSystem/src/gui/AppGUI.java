@@ -10,6 +10,7 @@ import course.Course;
 import items.PhysicalItem;
 import maintaining.MaintainCourses;
 import maintaining.MaintainPhysicalItems;
+import maintaining.MaintainPurchases;
 import maintaining.MaintainRentals;
 import search.Search;
 import structure.Management;
@@ -31,10 +32,12 @@ public class AppGUI extends JFrame implements ActionListener {
 	private MaintainCourses maintainCourse;
 	private MaintainPhysicalItems maintainItem;
 	private Management manager;
-	String itemsPath;
-	String rentalsPath;
+	private String itemsPath;
+	private String rentalsPath;
+	private String purchasePath;
+	private MaintainPurchases maintainPurchase;
 
-	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
@@ -42,6 +45,8 @@ public class AppGUI extends JFrame implements ActionListener {
 		this.manager = manager;
 		this.itemsPath = itemsPath;
 		this.rentalsPath = rentalsPath;
+		this.purchasePath = purchasePath;
+		this.maintainPurchase = maintainPurchase;
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -401,10 +406,73 @@ public class AppGUI extends JFrame implements ActionListener {
 		JPanel purchasePanel = new JPanel();
 		purchasePanel.setLayout(new BoxLayout(purchasePanel, BoxLayout.Y_AXIS));
 		purchasePanel.setBorder(BorderFactory.createTitledBorder("Purchase"));
+		
+        //incorporate real purchasable books
+		for(PhysicalItem i: maintainItem.items){
+			//Purchasable attribute in item contains a value
+			if(i.getPurchasable()!= "") {
+				//purchasable is converted to a double value, and a sale is displayed if there
+				if(Double.parseDouble(i.getPurchasable())<5) {
+					purchasePanel.add(openPurchaseDetails(i.getTitle(), i.getAuthor(), i.getPurchasable(), i));
+					System.out.println("SALE! $"+i.getPurchasable()+": " +i.getTitle() +" by "+i.getAuthor());
+				}
+				else {
+					purchasePanel.add(openPurchaseDetails(i.getTitle(), i.getAuthor(), i.getPurchasable(), i));
+					System.out.println("$"+i.getPurchasable()+": "+i.getTitle() +" by "+i.getAuthor());
+
+				}
+			}//end of items for loop
+
+		}
+		
+		
+		
+		
+        //purchasePanel.add(openPurchaseDetails("Book 1", "Bob", 6));
+        //purchasePanel.add(openPurchaseDetails("Book 2", "John", 3));
 
 		return purchasePanel;
 	}
+	
+    //Purchase page
+    private JPanel openPurchaseDetails(String name, String author, String cost, PhysicalItem item) {
+        JPanel subSection = new JPanel();
+        subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JLabel label = new JLabel(name);
+        subSection.add(label);
 
+
+        subSection.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //details will have the details of author and price added
+                PurchaseDetails details = new PurchaseDetails(name,author,cost, user, item, purchasePath, maintainPurchase);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                subSection.setBackground(Color.lightGray);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                subSection.setBackground(null);
+            }
+        });
+
+        return subSection;
+    }
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//Returns Page
 	private JPanel createReturnsPage() {
 		JPanel returnsPanel = new JPanel();
