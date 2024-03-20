@@ -31,8 +31,9 @@ public class LoginPage extends JFrame implements ActionListener {
     private MaintainCourses maintainCourse;
     private MaintainPhysicalItems maintainItem;
     private String itemsPath;
+    private String rentalsPath;
 
-    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
@@ -41,6 +42,7 @@ public class LoginPage extends JFrame implements ActionListener {
     	this.maintainCourse = maintainCourse;
     	this.maintainItem = maintainItem;
     	this.itemsPath = itemsPath;
+    	this.rentalsPath = rentalsPath;
     	
     	
     	
@@ -86,7 +88,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath);
+					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -100,7 +102,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath);
             frame.dispose();
         }
     }

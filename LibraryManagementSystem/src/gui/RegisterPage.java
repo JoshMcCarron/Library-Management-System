@@ -23,6 +23,7 @@ public class RegisterPage implements ActionListener {
     JButton loginButton = new JButton("Back to Login");
     String userType;
     
+    
     //variables needed for functionality
     private MaintainUser maintainUser;
     private Management manager;
@@ -31,8 +32,9 @@ public class RegisterPage implements ActionListener {
     private MaintainCourses maintainCourse;
     private MaintainPhysicalItems maintainItem;
     private String itemsPath;
+    private String rentalsPath;
 
-    public RegisterPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath) {
+    public RegisterPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
@@ -41,6 +43,7 @@ public class RegisterPage implements ActionListener {
     	this.maintainCourse = maintainCourse;
     	this.maintainItem = maintainItem;
     	this.itemsPath = itemsPath;
+    	this.rentalsPath = rentalsPath;
     	
     	
     	
@@ -77,18 +80,18 @@ public class RegisterPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == visitorB) {
             userType = "Visitor";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
         } else if (e.getSource() == studentB) {
         	userType = "Student";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
         } else if (e.getSource() == facultyB) {
         	userType = "Faculty";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
         } else if (e.getSource() == nonFacultyB) {
         	userType = "Non-Faculty";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
+            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
         } else if (e.getSource() == loginButton) {
-            LoginPage loginPage = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath);
+            LoginPage loginPage = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath);
 
         }
 

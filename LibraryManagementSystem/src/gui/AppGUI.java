@@ -1,5 +1,7 @@
 package gui;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -9,6 +11,7 @@ import items.PhysicalItem;
 import maintaining.MaintainCourses;
 import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
+import search.Search;
 import structure.Management;
 import userTypes.User;
 
@@ -20,6 +23,8 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 public class AppGUI extends JFrame implements ActionListener {
 	private User user;
 	private MaintainRentals maintainRental;
@@ -27,14 +32,16 @@ public class AppGUI extends JFrame implements ActionListener {
 	private MaintainPhysicalItems maintainItem;
 	private Management manager;
 	String itemsPath;
+	String rentalsPath;
 
-	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
 		this.maintainItem = maintainItem;
 		this.manager = manager;
 		this.itemsPath = itemsPath;
+		this.rentalsPath = rentalsPath;
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -125,23 +132,23 @@ public class AppGUI extends JFrame implements ActionListener {
 		// first section (Book)
 		section1.setLayout(new BoxLayout(section1, BoxLayout.Y_AXIS));
 		section1.setBorder(BorderFactory.createTitledBorder("Book"));
-		
+
 		// Second section (CDs)
 		JPanel section2 = new JPanel();
 		section2.setLayout(new BoxLayout(section2, BoxLayout.Y_AXIS));
 		section2.setBorder(BorderFactory.createTitledBorder("CD"));
-		
+
 		// Third section (Magazines)
 		JPanel section3 = new JPanel();
 		section3.setLayout(new BoxLayout(section3, BoxLayout.Y_AXIS));
 		section3.setBorder(BorderFactory.createTitledBorder("Magazine"));
-		
-		
+
+
 		//variable for getting current date/time
 		user.setRentals();
 		//loop through user rentals //and create a new subsection for 
 		for (Rent rentals: user.getRentals()) {
-	
+
 			if (rentals.getItem().getItemType().equals("Book")) {
 				section1.add(createSubSection(rentals.getItem().getTitle()));
 			}
@@ -151,13 +158,13 @@ public class AppGUI extends JFrame implements ActionListener {
 			else if (rentals.getItem().getItemType().equals("Magazine")) {
 				section3.add(createSubSection(rentals.getItem().getTitle()));
 			}
-			
+
 
 		}//end of rentals for loop
 
 		//display user fines
-//		user.calculateFines(maintainRental.rentals);
-//		System.out.println("You have a collective fine of $"+ user.getFine());
+		//		user.calculateFines(maintainRental.rentals);
+		//		System.out.println("You have a collective fine of $"+ user.getFine());
 
 
 
@@ -190,7 +197,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		for (Course c: maintainCourse.courses) {
 			if ((c.getFacultyId()== user.getId() || user.getId() == c.getStudentId1()|| user.getId() == c.getStudentId3() || user.getId() == c.getStudentId3())&& LocalDate.now().isBefore(c.getEndDate())) {
 				if ((c.getFacultyId()== user.getId() || user.getId() == c.getStudentId1()|| user.getId() == c.getStudentId3() || user.getId() == c.getStudentId3())&& LocalDate.now().isBefore(c.getEndDate())) 
-				coursePanel.add(createSubSection(c.getCourseName()));
+					coursePanel.add(createSubSection(c.getCourseName()));
 
 			}
 		}
@@ -244,7 +251,7 @@ public class AppGUI extends JFrame implements ActionListener {
 					bookName.setText("");
 				}
 
-				
+
 
 			}
 
@@ -261,6 +268,8 @@ public class AppGUI extends JFrame implements ActionListener {
 	//User Page
 	private JPanel createUserPage() {
 		JPanel userPanel = new JPanel();
+		JLabel searchBarLabel = new JLabel("Search Bar");
+		searchBarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
 		userPanel.setBorder(BorderFactory.createTitledBorder("User"));
 
@@ -278,50 +287,110 @@ public class AppGUI extends JFrame implements ActionListener {
 		searchBarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JTextField searchField = new JTextField();
 		searchField.setMaximumSize(new Dimension(2000,40));
-		JList<String> itemList = new JList<>();//Replace String list with our item type list for backend
 
-		//adding examples into list
-		DefaultListModel listModel = new DefaultListModel();
-		itemList.setModel(listModel);
-		listModel.addElement("Item 1");
-		listModel.addElement("Item 2");
-		listModel.addElement("Item 3");
-		listModel.addElement("Item 4");
 
-		JButton searchButton = new JButton("Search");
-		searchButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		DefaultListModel<String> listModel;
+		listModel = new DefaultListModel<>();
 
-		// Action listener for the search button
-		searchButton.addActionListener((ActionEvent e) -> {
-			String searchText = searchField.getText().toLowerCase();
-			DefaultListModel<String> filteredModel = new DefaultListModel<>();
-			for (int i = 0; i < listModel.getSize(); i++) {
-				String item = listModel.getElementAt(i).toString().toLowerCase();
-				if (item.contains(searchText)) {
-					filteredModel.addElement(listModel.getElementAt(i).toString());
-				}
+
+
+		searchField.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				filter();
 			}
-			itemList.setModel(filteredModel);
-		});
-
-		//Selecting item opens the description
-		itemList.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
-					String selectedValue = itemList.getSelectedValue();
-					if (selectedValue != null) {
-						System.out.println("Selected item: " + selectedValue);
-						Description des = new Description(selectedValue, user, maintainCourse);//opens description for selectedValue
+			public void removeUpdate(DocumentEvent e) {
+				filter();
+			}
+			public void insertUpdate(DocumentEvent e) {
+				filter();
+			}
+			public void filter() {
+				String filter = searchField.getText();
+				listModel.clear();
+				for (PhysicalItem item : maintainItem.items) {
+					String title = item.getTitle();
+					if (title.startsWith(filter)) {
+						listModel.addElement(title);
 					}
 				}
 			}
 		});
 
-		rentPanel.add(searchBarLabel);
+		JButton rentButton = new JButton("Rent");
+		rentButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		rentButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String searchedItem = searchField.getText();
+				for (PhysicalItem item : maintainItem.items) {
+					if (item.getTitle().equals(searchedItem)) {
+						String author = item.getAuthor();
+						if (user.getRentals().size()==10) {
+			    			JOptionPane.showMessageDialog(null, "You have reached the max amount of rentals! Please return items to rent again");
+						}
+						else if(user.getNumOfOverdue()==3) {
+			    			JOptionPane.showMessageDialog(null, "You have 3 rentals overdue! Please return items to rent again");
+						}
+						else {
+							Rent newRental = null;
+							try {
+								newRental = new Rent(user, searchedItem, author, maintainItem);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							if (newRental != null) {
+								maintainRental.rentals.add(newRental);
+								try {
+									maintainRental.update(rentalsPath);
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+								try {
+									maintainItem.update(itemsPath);
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
+
+				    			JOptionPane.showMessageDialog(null, "Item successfully rented!", "Success", JOptionPane.INFORMATION_MESSAGE);
+								break;
+							}
+							else{
+				    			JOptionPane.showMessageDialog(null, "An item with that name and author does not exist in our database");
+
+							}
+						}
+					}
+
+				}
+				searchField.setText(""); // Clear the text field
+			}
+		});
+		JList<String> bookList = new JList<>(listModel);
+		JScrollPane scrollPane = new JScrollPane(bookList);
+
+
+
 		rentPanel.add(searchField);
-		rentPanel.add(searchButton);
-		rentPanel.add(new JScrollPane(itemList));
+		rentPanel.add(rentButton);
+		rentPanel.add(scrollPane);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		return rentPanel;
