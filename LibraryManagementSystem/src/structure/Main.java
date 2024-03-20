@@ -81,7 +81,7 @@ public class Main {
 		User user = null;
 		
 		//load GUI
-		LoginPage login = new LoginPage(maintainUser, manager, userPath, maintainRental);
+		LoginPage login = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse);
 
 
 		//REQ1
@@ -531,6 +531,7 @@ public class Main {
 
 	public static void accountInfo(User user, MaintainCourses maintainCourse) {
 		//display faculty info
+		
 		if(user.getClass().getSimpleName().equals("Faculty")) {
 			System.out.println("Below is a list of courses you are currently teaching:");
 			for (Course c: maintainCourse.courses) {

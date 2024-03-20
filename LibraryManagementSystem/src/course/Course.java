@@ -2,6 +2,7 @@ package course;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 import textbook.Textbook;
 import userTypes.User;
@@ -17,6 +18,7 @@ public class Course {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private String courseName;
+	private boolean textAvail;
 	
 
 
@@ -31,6 +33,8 @@ public class Course {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.courseName = courseName;
+		Random random = new Random();
+		this.textAvail = random.nextBoolean();
 
 	}
 
@@ -118,6 +122,14 @@ public class Course {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public boolean isTextAvail() {
+		return textAvail;
+	}
+
+	public void setTextAvail(boolean textAvail) {
+		this.textAvail = textAvail;
 	}
 }
 //    public void accessVirtualText(Textbook textbook) {

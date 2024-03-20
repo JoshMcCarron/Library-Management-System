@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 
+import maintaining.MaintainCourses;
 import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
@@ -34,14 +35,16 @@ public class CreateAccountPage implements ActionListener {
 	private Management manager;
 	private String userPath;
 	private MaintainRentals maintainRental;
+	private MaintainCourses maintainCourse;
 
-	public CreateAccountPage(MaintainUser maintainUser, String userType, Management manager, String userPath, MaintainRentals maintainRental) {
+	public CreateAccountPage(MaintainUser maintainUser, String userType, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse) {
 		//initialize variables
 		this.maintainUser = maintainUser;
 		this.userType = userType;
 		this.manager = manager;
 		this.userPath = userPath;
 		this.maintainRental = maintainRental;
+		this.maintainCourse = maintainCourse;
 		
 
 
@@ -151,7 +154,7 @@ public class CreateAccountPage implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
 	    			try {
-						AppGUI mainPage = new AppGUI(user, maintainRental);
+						AppGUI mainPage = new AppGUI(user, maintainRental, maintainCourse);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -177,7 +180,7 @@ public class CreateAccountPage implements ActionListener {
 
 		}
 		if (e.getSource() == backButton) {
-			RegisterPage registerPage = new RegisterPage(maintainUser, manager, userPath, maintainRental);
+			RegisterPage registerPage = new RegisterPage(maintainUser, manager, userPath, maintainRental, maintainCourse);
 			frame.dispose();
 		}
 	}

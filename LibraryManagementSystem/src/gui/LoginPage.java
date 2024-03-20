@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 
+import maintaining.MaintainCourses;
 import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
@@ -26,13 +27,15 @@ public class LoginPage extends JFrame implements ActionListener {
     private Management manager;
     private String userPath;
     private MaintainRentals maintainRental;
+    private MaintainCourses maintainCourse;
 
-    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
     	this.userPath = userPath;
     	this.maintainRental = maintainRental;
+    	this.maintainCourse = maintainCourse;
     	
     	
     	
@@ -78,7 +81,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, maintainRental);
+					AppGUI mainPage = new AppGUI(user, maintainRental, maintainCourse);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -92,7 +95,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse);
             frame.dispose();
         }
     }

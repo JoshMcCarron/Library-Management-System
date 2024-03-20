@@ -4,6 +4,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import actions.Rent;
+import course.Course;
+import maintaining.MaintainCourses;
 import maintaining.MaintainRentals;
 import userTypes.User;
 
@@ -12,15 +14,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 public class AppGUI extends JFrame implements ActionListener {
 	private User user;
 	private MaintainRentals maintainRental;
+	private MaintainCourses maintainCourse;
 
-	public AppGUI(User user, MaintainRentals maintainRental) throws Exception {
+	public AppGUI(User user, MaintainRentals maintainRental, MaintainCourses maintainCourse) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
+		this.maintainCourse = maintainCourse;
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -124,7 +129,6 @@ public class AppGUI extends JFrame implements ActionListener {
 		
 		
 		//variable for getting current date/time
-		LocalDateTime now = LocalDateTime.now();
 		user.setRentals();
 		//loop through user rentals //and create a new subsection for 
 		for (Rent rentals: user.getRentals()) {
@@ -139,18 +143,7 @@ public class AppGUI extends JFrame implements ActionListener {
 				section3.add(createSubSection(rentals.getItem().getTitle()));
 			}
 			
-			//below code will be for getting fines later
-//			LocalDateTime dueDateTime = rentals.getDateDue().atStartOfDay();
-//			//get the days between today and the due date of the rental
-//			long days = ChronoUnit.DAYS.between(now, dueDateTime);
-//			//display different message depending on how close/past the due date of the rental is
-//			if (days <= 1 && days >= 0) {
-//				System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is due in the next day.");
-//			} else if (days < 0) {
-//				System.out.println("Warning: "+ rentals.getItem().getTitle()+ " is overdue.");
-//			} else {
-//				System.out.println(rentals.toString());
-//			}
+
 		}//end of rentals for loop
 
 		//display user fines
@@ -174,7 +167,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		JPanel newspaperPanel = new JPanel();
 		newspaperPanel.setLayout(new BoxLayout(newspaperPanel, BoxLayout.Y_AXIS));
 		newspaperPanel.setBorder(BorderFactory.createTitledBorder("Newspaper"));
-		newspaperPanel.add(createSubSection("Newspaper 1.1"));
+		newspaperPanel.add(createSubSection("The NewYork Times"));
 
 
 		return newspaperPanel;
@@ -185,10 +178,14 @@ public class AppGUI extends JFrame implements ActionListener {
 		JPanel coursePanel = new JPanel();
 		coursePanel.setLayout(new BoxLayout(coursePanel, BoxLayout.Y_AXIS));
 		coursePanel.setBorder(BorderFactory.createTitledBorder("Course"));
-		coursePanel.add(createSubSection("Course 1.1"));
-		coursePanel.add(createSubSection("Course 1.2"));
-		coursePanel.add(createSubSection("Course 1.3"));
-		coursePanel.add(createSubSection("Course 1.4"));
+		for (Course c: maintainCourse.courses) {
+			if ((c.getFacultyId()== user.getId() || user.getId() == c.getStudentId1()|| user.getId() == c.getStudentId3() || user.getId() == c.getStudentId3())&& LocalDate.now().isBefore(c.getEndDate())) {
+				if ((c.getFacultyId()== user.getId() || user.getId() == c.getStudentId1()|| user.getId() == c.getStudentId3() || user.getId() == c.getStudentId3())&& LocalDate.now().isBefore(c.getEndDate())) 
+				coursePanel.add(createSubSection(c.getCourseName()));
+
+			}
+		}
+
 
 		return coursePanel;
 	}
@@ -294,7 +291,7 @@ public class AppGUI extends JFrame implements ActionListener {
 					String selectedValue = itemList.getSelectedValue();
 					if (selectedValue != null) {
 						System.out.println("Selected item: " + selectedValue);
-						Description des = new Description(selectedValue, user.getRentals());//opens description for selectedValue
+						Description des = new Description(selectedValue, user, maintainCourse);//opens description for selectedValue
 					}
 				}
 			}
@@ -376,7 +373,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		subSection.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Description des = new Description(name,user.getRentals());
+				Description des = new Description(name,user, maintainCourse);
 			}
 
 			@Override
