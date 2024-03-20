@@ -81,7 +81,7 @@ public class Main {
 		User user = null;
 		
 		//load GUI
-		LoginPage login = new LoginPage(maintainUser, manager, userPath);
+		LoginPage login = new LoginPage(maintainUser, manager, userPath, maintainRental);
 
 
 		//REQ1
@@ -251,6 +251,7 @@ public class Main {
 	}//end of userChoice method
 
 
+	//fines will be stored when User is clciekd
 	public static void displayRentalsAndFines(User user, MaintainRentals maintainRental) throws Exception {
 		//variable for getting current date/time
 		LocalDateTime now = LocalDateTime.now();

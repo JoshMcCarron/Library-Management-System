@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 
+import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
 import userTypes.User;
@@ -32,13 +33,16 @@ public class CreateAccountPage implements ActionListener {
 	private String userType;
 	private Management manager;
 	private String userPath;
+	private MaintainRentals maintainRental;
 
-	public CreateAccountPage(MaintainUser maintainUser, String userType, Management manager, String userPath) {
+	public CreateAccountPage(MaintainUser maintainUser, String userType, Management manager, String userPath, MaintainRentals maintainRental) {
 		//initialize variables
 		this.maintainUser = maintainUser;
 		this.userType = userType;
 		this.manager = manager;
 		this.userPath = userPath;
+		this.maintainRental = maintainRental;
+		
 
 
 		frame.setSize(400, 250);
@@ -146,7 +150,12 @@ public class CreateAccountPage implements ActionListener {
 	    			// The user has successfully registered and auto logged in.
 					JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-	    			AppGUI mainPage = new AppGUI();
+	    			try {
+						AppGUI mainPage = new AppGUI(user, maintainRental);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 	    			 frame.dispose();
 
 				}
@@ -168,7 +177,7 @@ public class CreateAccountPage implements ActionListener {
 
 		}
 		if (e.getSource() == backButton) {
-			RegisterPage registerPage = new RegisterPage(maintainUser, manager, userPath);
+			RegisterPage registerPage = new RegisterPage(maintainUser, manager, userPath, maintainRental);
 			frame.dispose();
 		}
 	}
