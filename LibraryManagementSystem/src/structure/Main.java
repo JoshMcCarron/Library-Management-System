@@ -256,6 +256,7 @@ public class Main {
 		//variable for getting current date/time
 		LocalDateTime now = LocalDateTime.now();
 
+
 		//display user rentals
 		//set user rentals
 		user.setRentals();
@@ -543,6 +544,15 @@ public class Main {
 			for (Course c: maintainCourse.courses) {
 				Random random = new Random();
 				if (c.getFacultyId()== user.getId()) {
+					
+					try {
+						c.addObserver(user.getId());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+						c.checkTextStatus();
+				
 					if(random.nextBoolean()) {
 						System.out.println(c.getTextbook()+ ": Sorry, but currently this textbook is not available. We will notify our management to help procure this textbook for you");
 					}

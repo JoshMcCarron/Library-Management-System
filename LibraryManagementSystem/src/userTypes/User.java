@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import actions.Rent;
@@ -13,7 +14,7 @@ import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
 import structure.Management;
 
-public abstract class  User {
+public abstract class  User implements Observer{
 	private String email;
 	private String password;
 	boolean validate;
@@ -179,6 +180,8 @@ public abstract class  User {
 	}
 	public void calculateFines(ArrayList<Rent> totalRentals) {
 		LocalDate today =  LocalDate.now();
+        FineContext context = new FineContext();
+
 		//loop through rentals
 		for (Rent r: totalRentals) {
 			//filter rents to only this users rentals (past and current)
@@ -189,7 +192,8 @@ public abstract class  User {
 					if (r.getDateReturned().isAfter(r.getDateDue())) {
 						//fine calculation
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), r.getDateReturned());
-						this.fine = fine + daysBetween * 0.5;
+				        context.setStrategy(new NormalFineStrategy());
+						this.fine = fine + daysBetween * context.executeStrategy();;
 						this.numOfOverdue= numOfOverdue+ 1;
 					}
 				}
@@ -200,10 +204,12 @@ public abstract class  User {
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), today);
 						if (daysBetween>= 15) {
 							System.out.println(r.getItem().getTitle()+ " by "+ r.getItem().getAuthor()+ " is overdue by more than 15 days. Our system deems that this item is lost. $10 has been added to your fine.");
-							this.fine = fine + 10;
+							 context.setStrategy(new LostFineStrategy());
+							this.fine = fine + context.executeStrategy();;
 						}
 						else {
-						this.fine = fine + daysBetween * 0.5;
+							context.setStrategy(new NormalFineStrategy());
+						this.fine = fine + daysBetween * context.executeStrategy();;
 						}
 
 					}
@@ -218,6 +224,11 @@ public abstract class  User {
 
 	public void setNumOfOverdue(int numOfOverdue) {
 		this.numOfOverdue = numOfOverdue;
+	}
+	
+	public String update(String newEdition) {
+		//System.out.println(newEdition);
+		return newEdition;
 	}
 
 

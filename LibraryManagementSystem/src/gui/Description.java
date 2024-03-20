@@ -59,6 +59,7 @@ public class Description extends JFrame {
 						textArea.append("Course End Date: "+ c.getEndDate()+ "\n");
 
 						if(user.getClass().getSimpleName().equals("Faculty")){
+							
 							if (c.getTextbookStatus().equals("new")) {
 								textArea.append("Textbook asociated with this course: "+ c.getTextbook()+ "(A NEW EDITION IS AVAILABLE)"+ "\n");
 
@@ -82,19 +83,25 @@ public class Description extends JFrame {
 			textArea.append("Below is a list of your past textbook titles and their availability:" + "\n");
 
 			for (Course c: maintainCourse.courses) {
-
-
+				
 				if (c.getFacultyId()== user.getId()&& LocalDate.now().isAfter(c.getEndDate())) {
 					if(c.isTextAvail()) {
 						textArea.append(c.getTextbook()+ ": Sorry, but currently this textbook is not available. We will notify our management to help procure this textbook for you"+ "\n");
 					}
-					else if (c.getTextbookStatus().equals("new")) {
-						textArea.append(c.getTextbook()+ ": A NEW EDITION IS AVAILABLE"+ "\n");
+
+					else if (!c.getTextbookStatus().equals("new")){
+						textArea.append(c.getTextbook()+ ": standard edition is available"+ "\n");
 
 					}
 					else {
-						textArea.append(c.getTextbook()+ ": standard edition is available"+ "\n");
-
+						try {
+							c.addObserver(user.getId());
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+							c.checkTextStatus();
+							textArea.append(c.getNewEditionMessage()+ "\n");
 					}
 				}
 

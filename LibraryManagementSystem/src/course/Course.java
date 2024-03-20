@@ -4,10 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+import maintaining.MaintainUser;
 import textbook.Textbook;
+import userTypes.Observer;
+import userTypes.Subject;
 import userTypes.User;
 
-public class Course {
+public class Course implements Subject{
 	private int courseId;
 	private int facultyId;
 	private int studentId1;
@@ -19,10 +22,15 @@ public class Course {
 	private LocalDate endDate;
 	private String courseName;
 	private boolean textAvail;
-	
+	private Observer observer;
+	private String newEditionMessage;
+
+	String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
+	MaintainUser maintainUser = new MaintainUser();
 
 
-	public Course(int courseId, int facultyId, int studentId1, int studentId2, int studentId3, String textbook, String textbookStatus, LocalDate startDate, LocalDate endDate, String courseName) {
+
+	public Course(int courseId, int facultyId, int studentId1, int studentId2, int studentId3, String textbook, String textbookStatus, LocalDate startDate, LocalDate endDate, String courseName) throws Exception {
 		this.courseId = courseId;
 		this.facultyId=facultyId;
 		this.studentId1=studentId1;
@@ -35,7 +43,21 @@ public class Course {
 		this.courseName = courseName;
 		Random random = new Random();
 		this.textAvail = random.nextBoolean();
+//		addObserver(facultyId);
+//		if (this.observer!=null) {
+//			checkTextStatus();
+//		}
 
+	}
+
+	public void addObserver(int facultyId) throws Exception {
+		maintainUser.load(userPath);
+		for (User user : maintainUser.users) {
+			if (user.getId() == facultyId) {
+				this.observer = user;
+			}
+
+		}
 	}
 
 	public int getCourseId() {
@@ -113,7 +135,7 @@ public class Course {
 	@Override
 	public String toString() {
 		return this.getCourseName() + ": "+ this.getTextbook() +", start date: "+this.getStartDate() + ", end date: "+this.getEndDate();
-		
+
 	}
 
 	public String getCourseName() {
@@ -131,7 +153,36 @@ public class Course {
 	public void setTextAvail(boolean textAvail) {
 		this.textAvail = textAvail;
 	}
+
+
+	//	@Override
+	//	public void removeObserver(Observer observer) {
+	//		// TODO Auto-generated method stub
+	//		
+	//	}
+
+	@Override
+	public void notifyObserver(String newEdition) {
+		// TODO Auto-generated method stub
+		this.newEditionMessage = observer.update(newEdition);
+
+	}
+	// Method to check availability
+	public void checkTextStatus() {
+		if(this.textbookStatus.equals("new")){
+
+			notifyObserver(getTextbook()+ ": A NEW EDITION IS AVAILABLE");
+		}
+	}
+
+	public Observer Observer(){
+		return observer;
+	}
+	public String getNewEditionMessage(){
+		return newEditionMessage;
+	}
+
 }
 //    public void accessVirtualText(Textbook textbook) {
-	//        // implementation here
+//        // implementation here
 //    }
