@@ -93,7 +93,7 @@ public class LoginPage extends JFrame implements ActionListener {
             User user = maintainUser.login(email, password);
     		if (user != null) {
     			// The user has successfully logged in
-    			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
+    			JOptionPane.showMessageDialog(null, "Login successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
 					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);

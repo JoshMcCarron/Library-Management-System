@@ -47,7 +47,8 @@ public class Main {
 		LocalDateTime now = LocalDateTime.now();
 
 
-		//these are the paths to each of the csv files. Please edit to the location of yours!
+		//NOTE: UNDER THE "actions" PACKAGE, IN THE FILE "Rent", THERE IS TWO PATHS THAT NEED TO BE ADJUSTED AS WELL
+		//these are the paths to each of the csv files. Please edit to the location of where your files are located!
 		String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 		MaintainUser maintainUser = new MaintainUser();
 
