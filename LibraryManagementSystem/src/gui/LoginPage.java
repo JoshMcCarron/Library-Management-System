@@ -35,8 +35,10 @@ public class LoginPage extends JFrame implements ActionListener {
     private String rentalsPath;
 	private String purchasePath;
 	private MaintainPurchases maintainPurchase;
+	private String onlineBook1Path;
+	private String onlineBook2Path;
 
-    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath,String purchasePath, MaintainPurchases maintainPurchase) {
+    public LoginPage(MaintainUser maintainUser, Management manager, String userPath, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath,String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path) {
     	//initialize variables
     	this.maintainUser = maintainUser;
     	this.manager = manager;
@@ -48,6 +50,8 @@ public class LoginPage extends JFrame implements ActionListener {
     	this.rentalsPath = rentalsPath;
 		this.purchasePath = purchasePath;
 		this.maintainPurchase = maintainPurchase;
+		this.onlineBook1Path = onlineBook1Path;
+		this.onlineBook2Path = onlineBook2Path;
     	
     	
         frame.setSize(400, 250);
@@ -92,7 +96,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Registration successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase);
+					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -106,7 +110,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase);
+            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
             frame.dispose();
         }
     }

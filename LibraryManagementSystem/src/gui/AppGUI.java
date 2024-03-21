@@ -21,6 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -36,8 +40,10 @@ public class AppGUI extends JFrame implements ActionListener {
 	private String rentalsPath;
 	private String purchasePath;
 	private MaintainPurchases maintainPurchase;
+	private String onlineBook1Path;
+	private String onlineBook2Path;
 
-	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
@@ -47,6 +53,9 @@ public class AppGUI extends JFrame implements ActionListener {
 		this.rentalsPath = rentalsPath;
 		this.purchasePath = purchasePath;
 		this.maintainPurchase = maintainPurchase;
+		this.onlineBook1Path = onlineBook1Path;
+		this.onlineBook2Path = onlineBook2Path;
+		
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -65,6 +74,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		JButton rent = new JButton("Rent");
 		JButton purchase = new JButton("Purchase");
 		JButton returns = new JButton("Returns");
+		JButton onlineBooks = new JButton("Online Books");
 		taskbar.add(homepage);
 		taskbar.add(newspaper);
 		taskbar.add(course);
@@ -72,6 +82,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		taskbar.add(rent);
 		taskbar.add(purchase);
 		taskbar.add(returns);
+		taskbar.add(onlineBooks);
 		taskbar.add(Box.createHorizontalGlue());
 
 
@@ -96,6 +107,8 @@ public class AppGUI extends JFrame implements ActionListener {
 		cardPanel.add(createRentPage(), "Rent");
 		cardPanel.add(createPurchasePage(), "Purchase");
 		cardPanel.add(createReturnsPage(),"Returns");
+        cardPanel.add(createOnlineBooksPage(), "Online Books");
+
 
 		// Add card panel to the main panel
 		getContentPane().add(cardPanel, BorderLayout.CENTER);
@@ -119,6 +132,9 @@ public class AppGUI extends JFrame implements ActionListener {
 		purchase.addActionListener(e -> cardLayout.show(cardPanel, "Purchase"));
 
 		returns.addActionListener(e -> cardLayout.show(cardPanel, "Returns"));
+		
+        onlineBooks.addActionListener(e -> cardLayout.show(cardPanel, "Online Books"));
+
 
 
 	}
@@ -531,6 +547,73 @@ public class AppGUI extends JFrame implements ActionListener {
 		returnsPanel.add(returnStatusLabel);
 		return returnsPanel;
 	}
+	
+    //Online Books Page
+    private JPanel createOnlineBooksPage() {
+        JPanel OBookPanel = new JPanel();
+        OBookPanel.setLayout(new BoxLayout(OBookPanel, BoxLayout.Y_AXIS));
+        OBookPanel.setBorder(BorderFactory.createTitledBorder("Online Books"));
+        //incorporate real online books
+        
+        OBookPanel.add(openOBook("The Adventure of the Lost Jewel"));
+        OBookPanel.add(openOBook("The Mystery of the Whispering Woods"));
+        return OBookPanel;
+    }
+    
+    //Open Online Book
+    private JPanel openOBook(String name) {
+    	
+        JPanel subSection = new JPanel();
+        subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        JLabel label = new JLabel(name);
+        subSection.add(label);
+
+
+        subSection.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	if(name.equals("The Adventure of the Lost Jewel")) {
+            		//path to online book one
+					Path path1 = Paths.get(onlineBook1Path);
+					String content;
+					try {
+						content = Files.readString(path1);
+		        		OnlineBook onlineBook = new OnlineBook(name, content);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+            	}
+            	else {
+            		Path path2 = Paths.get(onlineBook2Path);						        
+					String content;
+					try {
+						content = Files.readString(path2);
+		        		OnlineBook onlineBook = new OnlineBook(name, content);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+            	}
+
+            	
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                subSection.setBackground(Color.lightGray);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                subSection.setBackground(null);
+            }
+        });
+
+        return subSection;
+    }
 
 	//Subsections
 	private JPanel createSubSection(String name) {
