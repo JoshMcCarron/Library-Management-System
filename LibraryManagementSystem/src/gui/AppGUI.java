@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,6 +32,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 public class AppGUI extends JFrame implements ActionListener {
 	private User user;
 	private MaintainRentals maintainRental;
@@ -55,7 +59,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		this.maintainPurchase = maintainPurchase;
 		this.onlineBook1Path = onlineBook1Path;
 		this.onlineBook2Path = onlineBook2Path;
-		
+
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000, 800);
@@ -107,7 +111,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		cardPanel.add(createRentPage(), "Rent");
 		cardPanel.add(createPurchasePage(), "Purchase");
 		cardPanel.add(createReturnsPage(),"Returns");
-        cardPanel.add(createOnlineBooksPage(), "Online Books");
+		cardPanel.add(createOnlineBooksPage(), "Online Books");
 
 
 		// Add card panel to the main panel
@@ -132,8 +136,8 @@ public class AppGUI extends JFrame implements ActionListener {
 		purchase.addActionListener(e -> cardLayout.show(cardPanel, "Purchase"));
 
 		returns.addActionListener(e -> cardLayout.show(cardPanel, "Returns"));
-		
-        onlineBooks.addActionListener(e -> cardLayout.show(cardPanel, "Online Books"));
+
+		onlineBooks.addActionListener(e -> cardLayout.show(cardPanel, "Online Books"));
 
 
 
@@ -204,8 +208,40 @@ public class AppGUI extends JFrame implements ActionListener {
 		JPanel newspaperPanel = new JPanel();
 		newspaperPanel.setLayout(new BoxLayout(newspaperPanel, BoxLayout.Y_AXIS));
 		newspaperPanel.setBorder(BorderFactory.createTitledBorder("Newspaper"));
-		newspaperPanel.add(createSubSection("The NewYork Times"));
 
+		// Adding the text box
+		JLabel questionLabel = new JLabel("Would you like to go to New York Times? | **NOTE: This will open a tab in your browser**");
+		questionLabel.setHorizontalAlignment(JLabel.CENTER);
+		newspaperPanel.add(questionLabel);
+
+		// Adding the buttons
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		JButton okButton = new JButton("Yes");
+		//JButton cancelButton = new JButton("Cancel");
+
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Add your action when Yes is clicked
+				//opens up browser to NY TIMES if browser supports it
+				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+					try {
+						Desktop.getDesktop().browse(new URI("https://www.nytimes.com/subscription"));
+					} catch (IOException | URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+
+//		cancelButton.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				// Add your action when No is clicked
+//			}
+//		});
+
+		buttonPanel.add(okButton);
+		//buttonPanel.add(cancelButton);
+		newspaperPanel.add(buttonPanel);
 
 		return newspaperPanel;
 	}
@@ -339,7 +375,7 @@ public class AppGUI extends JFrame implements ActionListener {
 
 		JButton rentButton = new JButton("Rent");
 		rentButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+
 		rentButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -348,10 +384,10 @@ public class AppGUI extends JFrame implements ActionListener {
 					if (item.getTitle().equals(searchedItem)) {
 						String author = item.getAuthor();
 						if (user.getRentals().size()==10) {
-			    			JOptionPane.showMessageDialog(null, "You have reached the max amount of rentals! Please return items to rent again");
+							JOptionPane.showMessageDialog(null, "You have reached the max amount of rentals! Please return items to rent again");
 						}
 						else if(user.getNumOfOverdue()==3) {
-			    			JOptionPane.showMessageDialog(null, "You have 3 rentals overdue! Please return items to rent again");
+							JOptionPane.showMessageDialog(null, "You have 3 rentals overdue! Please return items to rent again");
 						}
 						else {
 							Rent newRental = null;
@@ -376,11 +412,11 @@ public class AppGUI extends JFrame implements ActionListener {
 									e1.printStackTrace();
 								}
 
-				    			JOptionPane.showMessageDialog(null, "Item successfully rented!", "Success", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Item successfully rented!", "Success", JOptionPane.INFORMATION_MESSAGE);
 								break;
 							}
 							else{
-				    			JOptionPane.showMessageDialog(null, "An item with that name and author does not exist in our database");
+								JOptionPane.showMessageDialog(null, "An item with that name and author does not exist in our database");
 
 							}
 						}
@@ -422,8 +458,8 @@ public class AppGUI extends JFrame implements ActionListener {
 		JPanel purchasePanel = new JPanel();
 		purchasePanel.setLayout(new BoxLayout(purchasePanel, BoxLayout.Y_AXIS));
 		purchasePanel.setBorder(BorderFactory.createTitledBorder("Purchase"));
-		
-        //incorporate real purchasable books
+
+		//incorporate real purchasable books
 		for(PhysicalItem i: maintainItem.items){
 			//Purchasable attribute in item contains a value
 			if(i.getPurchasable()!= "") {
@@ -440,55 +476,55 @@ public class AppGUI extends JFrame implements ActionListener {
 			}//end of items for loop
 
 		}
-		
-		
-		
-		
-        //purchasePanel.add(openPurchaseDetails("Book 1", "Bob", 6));
-        //purchasePanel.add(openPurchaseDetails("Book 2", "John", 3));
+
+
+
+
+		//purchasePanel.add(openPurchaseDetails("Book 1", "Bob", 6));
+		//purchasePanel.add(openPurchaseDetails("Book 2", "John", 3));
 
 		return purchasePanel;
 	}
-	
-    //Purchase page
-    private JPanel openPurchaseDetails(String name, String author, String cost, PhysicalItem item) {
-        JPanel subSection = new JPanel();
-        subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JLabel label = new JLabel(name);
-        subSection.add(label);
+
+	//Purchase page
+	private JPanel openPurchaseDetails(String name, String author, String cost, PhysicalItem item) {
+		JPanel subSection = new JPanel();
+		subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JLabel label = new JLabel(name);
+		subSection.add(label);
 
 
-        subSection.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //details will have the details of author and price added
-                PurchaseDetails details = new PurchaseDetails(name,author,cost, user, item, purchasePath, maintainPurchase);
-            }
+		subSection.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//details will have the details of author and price added
+				PurchaseDetails details = new PurchaseDetails(name,author,cost, user, item, purchasePath, maintainPurchase);
+			}
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                subSection.setBackground(Color.lightGray);
-            }
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				subSection.setBackground(Color.lightGray);
+			}
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                subSection.setBackground(null);
-            }
-        });
+			@Override
+			public void mouseExited(MouseEvent e) {
+				subSection.setBackground(null);
+			}
+		});
 
-        return subSection;
-    }
+		return subSection;
+	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
 	//Returns Page
 	private JPanel createReturnsPage() {
 		JPanel returnsPanel = new JPanel();
@@ -520,7 +556,7 @@ public class AppGUI extends JFrame implements ActionListener {
 				for (Rent rental: user.getRentals()) {
 					//if item exists return it
 					if(rental.getItem().getTitle().equals(bookName.getText()) && rental.getItem().getAuthor().equals(author.getText())) {
-						
+
 						//method in user to returnRental
 						try {
 							validReturn = true;
@@ -536,7 +572,7 @@ public class AppGUI extends JFrame implements ActionListener {
 				if(!validReturn) {
 					returnStatusLabel.setText("Unable to return item");
 				}
-				
+
 
 			}
 		});
@@ -547,73 +583,73 @@ public class AppGUI extends JFrame implements ActionListener {
 		returnsPanel.add(returnStatusLabel);
 		return returnsPanel;
 	}
-	
-    //Online Books Page
-    private JPanel createOnlineBooksPage() {
-        JPanel OBookPanel = new JPanel();
-        OBookPanel.setLayout(new BoxLayout(OBookPanel, BoxLayout.Y_AXIS));
-        OBookPanel.setBorder(BorderFactory.createTitledBorder("Online Books"));
-        //incorporate real online books
-        
-        OBookPanel.add(openOBook("The Adventure of the Lost Jewel"));
-        OBookPanel.add(openOBook("The Mystery of the Whispering Woods"));
-        return OBookPanel;
-    }
-    
-    //Open Online Book
-    private JPanel openOBook(String name) {
-    	
-        JPanel subSection = new JPanel();
-        subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JLabel label = new JLabel(name);
-        subSection.add(label);
+
+	//Online Books Page
+	private JPanel createOnlineBooksPage() {
+		JPanel OBookPanel = new JPanel();
+		OBookPanel.setLayout(new BoxLayout(OBookPanel, BoxLayout.Y_AXIS));
+		OBookPanel.setBorder(BorderFactory.createTitledBorder("Online Books"));
+		//incorporate real online books
+
+		OBookPanel.add(openOBook("The Adventure of the Lost Jewel"));
+		OBookPanel.add(openOBook("The Mystery of the Whispering Woods"));
+		return OBookPanel;
+	}
+
+	//Open Online Book
+	private JPanel openOBook(String name) {
+
+		JPanel subSection = new JPanel();
+		subSection.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		JLabel label = new JLabel(name);
+		subSection.add(label);
 
 
-        subSection.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	if(name.equals("The Adventure of the Lost Jewel")) {
-            		//path to online book one
+		subSection.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(name.equals("The Adventure of the Lost Jewel")) {
+					//path to online book one
 					Path path1 = Paths.get(onlineBook1Path);
 					String content;
 					try {
 						content = Files.readString(path1);
-		        		OnlineBook onlineBook = new OnlineBook(name, content);
+						OnlineBook onlineBook = new OnlineBook(name, content);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
-            	}
-            	else {
-            		Path path2 = Paths.get(onlineBook2Path);						        
+				}
+				else {
+					Path path2 = Paths.get(onlineBook2Path);						        
 					String content;
 					try {
 						content = Files.readString(path2);
-		        		OnlineBook onlineBook = new OnlineBook(name, content);
+						OnlineBook onlineBook = new OnlineBook(name, content);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 
-            	}
+				}
 
-            	
-            }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                subSection.setBackground(Color.lightGray);
-            }
+			}
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                subSection.setBackground(null);
-            }
-        });
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				subSection.setBackground(Color.lightGray);
+			}
 
-        return subSection;
-    }
+			@Override
+			public void mouseExited(MouseEvent e) {
+				subSection.setBackground(null);
+			}
+		});
+
+		return subSection;
+	}
 
 	//Subsections
 	private JPanel createSubSection(String name) {
