@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import actions.Rent;
-import items.Book;
 import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainRentals;
 import structure.Management;
@@ -62,7 +60,7 @@ public abstract class  User implements Observer{
 					this.id = ++lastId;        
 					this.userType= userType; 
 					this.fine=0;
-					System.out.println("Your account has successfully been validated");
+					//System.out.println("Your account has successfully been validated");
 				}
 				else {
 					throw new Exception("The management team has not validated your account!");	
@@ -74,7 +72,7 @@ public abstract class  User implements Observer{
 				this.password = password;
 				this.id = ++lastId;        
 				this.userType= userType; 
-				System.out.println("As you are a visitor, you do not need validation");
+				//System.out.println("As you are a visitor, you do not need validation");
 
 			}
 		}
@@ -203,7 +201,7 @@ public abstract class  User implements Observer{
 					if (today.isAfter(r.getDateDue())) {
 				        long daysBetween = ChronoUnit.DAYS.between(r.getDateDue(), today);
 						if (daysBetween>= 15) {
-							System.out.println(r.getItem().getTitle()+ " by "+ r.getItem().getAuthor()+ " is overdue by more than 15 days. Our system deems that this item is lost. $10 has been added to your fine.");
+							//System.out.println(r.getItem().getTitle()+ " by "+ r.getItem().getAuthor()+ " is overdue by more than 15 days. Our system deems that this item is lost. $10 has been added to your fine.");
 							 context.setStrategy(new LostFineStrategy());
 							this.fine = fine + context.executeStrategy();;
 						}

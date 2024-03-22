@@ -4,22 +4,16 @@ import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-
 import actions.Rent;
 
-
+//class for creating new rental objects and writing object entries to the itemsBorrowed csv file
 public class MaintainRentals {
 	public ArrayList<Rent> rentals = new ArrayList<Rent>();
 	public String path;
 
-
-
-
-
-
+	//method to create rental objects from the itemsBorrowed csv file
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 
 		reader.readHeaders();
@@ -43,7 +37,7 @@ public class MaintainRentals {
 		}
 
 	}
-
+	//method to write rental objects to the itemsBorrowed csv file
 	public void update(String path) throws Exception{
 		try {		
 			CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');

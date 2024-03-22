@@ -9,7 +9,6 @@ import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import structure.Management;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,18 +86,18 @@ public class RegisterPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == visitorB) {
             userType = "Visitor";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
         } else if (e.getSource() == studentB) {
         	userType = "Student";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
         } else if (e.getSource() == facultyB) {
         	userType = "Faculty";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
         } else if (e.getSource() == nonFacultyB) {
         	userType = "Non-Faculty";
-            CreateAccountPage createAccount = new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new CreateAccountPage(maintainUser, userType, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
         } else if (e.getSource() == loginButton) {
-            LoginPage loginPage = new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
 
         }
 

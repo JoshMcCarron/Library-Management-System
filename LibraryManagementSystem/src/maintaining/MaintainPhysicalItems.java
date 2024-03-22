@@ -2,18 +2,17 @@ package maintaining;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-
-
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import items.*;
 import structure.Management;
 
-
+//class for creating new item objects and writing object entries to the item csv file
 public class MaintainPhysicalItems {
 	public ArrayList<PhysicalItem> items = new ArrayList<PhysicalItem>();
 	public String path;
 
+	//method to create item objects from the item csv file
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 
 		reader.readHeaders();
@@ -46,7 +45,7 @@ public class MaintainPhysicalItems {
 			items.add(item);
 		}
 	}
-
+	//method to write item objects to the item csv file
 	public void update(String path) throws Exception{
 		try {		
 			CsvWriter csvOutput = new CsvWriter(new FileWriter(path, false), ',');
@@ -100,7 +99,6 @@ public class MaintainPhysicalItems {
 		for(PhysicalItem i: items){
 			if (itemId == i.getId()) {
 				i.decreaseCopies();
-				System.out.println(i);
 			}
 		}
 	}
@@ -109,7 +107,6 @@ public class MaintainPhysicalItems {
 		for(PhysicalItem i: items){
 			if (itemId == i.getId()) {
 				i.increaseCopies();
-				System.out.println(i);
 			}
 		}
 	}

@@ -20,6 +20,10 @@ import java.util.List;
 
 
 public class NewItem extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MaintainPhysicalItems maintainItem;
 	private String itemsPath;
 	private MaintainRentals maintainRental;

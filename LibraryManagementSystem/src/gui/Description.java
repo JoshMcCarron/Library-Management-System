@@ -6,15 +6,18 @@ import actions.Rent;
 import course.Course;
 import maintaining.MaintainCourses;
 import userTypes.User;
-
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Random;
+
 
 public class Description extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Description(String name, User user, MaintainCourses maintainCourse) {
 		setTitle(name);

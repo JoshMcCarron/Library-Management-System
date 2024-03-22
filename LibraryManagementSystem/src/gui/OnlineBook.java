@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class OnlineBook extends JFrame {
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
     private String text;
     private JTextArea textArea;
     private JScrollPane scrollPane;

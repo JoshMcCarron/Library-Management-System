@@ -2,8 +2,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 
 import actions.Rent;
 import course.Course;
@@ -13,7 +12,6 @@ import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainPurchases;
 import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
-import search.Search;
 import structure.Management;
 import userTypes.User;
 
@@ -29,13 +27,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 
 public class AppGUI extends JFrame implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private User user;
 	private MaintainUser maintainUser;
 	private MaintainRentals maintainRental;
@@ -287,7 +286,6 @@ public class AppGUI extends JFrame implements ActionListener {
 		bookPanel.add(bookLabel);
 		bookPanel.add(bookName);
 		JLabel priorityStatusLabel = new JLabel();
-		final boolean[] requestButtonClicked = {false};
 		JButton submitRequest = new JButton("Request");
 		//button for submitting request
 		submitRequest.addActionListener(new ActionListener() {
@@ -379,7 +377,7 @@ public class AppGUI extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (managerField.getText().equals(manager.getManagerCode())) {
-				NewItem newItemPage = new NewItem(maintainItem, itemsPath, maintainRental, rentalsPath);
+				new NewItem(maintainItem, itemsPath, maintainRental, rentalsPath);
 				}
 				else {
 					managerField.setText("");
@@ -397,7 +395,7 @@ public class AppGUI extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				int a = JOptionPane.showConfirmDialog(null, "Are you sure?");
 				if (a == JOptionPane.YES_OPTION) {
-					LoginPage login = new LoginPage(maintainUser, manager, itemsPath, maintainRental, maintainCourse, maintainItem, itemsPath, itemsPath, itemsPath, maintainPurchase, itemsPath, itemsPath);
+					new LoginPage(maintainUser, manager, itemsPath, maintainRental, maintainCourse, maintainItem, itemsPath, itemsPath, itemsPath, maintainPurchase, itemsPath, itemsPath);
 					dispose();
 				}
 			}
@@ -542,11 +540,9 @@ public class AppGUI extends JFrame implements ActionListener {
 				//purchasable is converted to a double value, and a sale is displayed if there
 				if(Double.parseDouble(i.getPurchasable())<5) {
 					purchasePanel.add(openPurchaseDetails(i.getTitle(), i.getAuthor(), i.getPurchasable(), i));
-					System.out.println("SALE! $"+i.getPurchasable()+": " +i.getTitle() +" by "+i.getAuthor());
 				}
 				else {
 					purchasePanel.add(openPurchaseDetails(i.getTitle(), i.getAuthor(), i.getPurchasable(), i));
-					System.out.println("$"+i.getPurchasable()+": "+i.getTitle() +" by "+i.getAuthor());
 
 				}
 			}//end of items for loop
@@ -574,7 +570,7 @@ public class AppGUI extends JFrame implements ActionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//details will have the details of author and price added
-				PurchaseDetails details = new PurchaseDetails(name,author,cost, user, item, purchasePath, maintainPurchase);
+				new PurchaseDetails(name,author,cost, user, item, purchasePath, maintainPurchase);
 			}
 
 			@Override
@@ -622,7 +618,6 @@ public class AppGUI extends JFrame implements ActionListener {
 		bookName.setPreferredSize(new Dimension(600, 70));
 		bookPanel.add(bookLabel);
 		bookPanel.add(bookName);
-		final boolean[] returnButtonPressed = {false};
 		JButton submitReturn = new JButton("Return");
 		JLabel returnStatusLabel = new JLabel();
 		submitReturn.addActionListener(new ActionListener() {
@@ -690,7 +685,7 @@ public class AppGUI extends JFrame implements ActionListener {
 					String content;
 					try {
 						content = Files.readString(path1);
-						OnlineBook onlineBook = new OnlineBook(name, content);
+						new OnlineBook(name, content);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -702,7 +697,7 @@ public class AppGUI extends JFrame implements ActionListener {
 					String content;
 					try {
 						content = Files.readString(path2);
-						OnlineBook onlineBook = new OnlineBook(name, content);
+						new OnlineBook(name, content);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -737,7 +732,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		subSection.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Description des = new Description(name,user, maintainCourse);
+				new Description(name,user, maintainCourse);
 			}
 
 			@Override

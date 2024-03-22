@@ -1,38 +1,33 @@
 package actions;
 
-import java.io.FileNotFoundException;
+
 import java.time.LocalDate;
-
-import com.csvreader.CsvReader;
-
 import items.PhysicalItem;
 import maintaining.MaintainPhysicalItems;
-import maintaining.MaintainRentals;
 import maintaining.MaintainUser;
 import userTypes.User;
-
+//This class is to handle each rental interaction
 public class Rent {
+
 	private LocalDate dateBorrowed;
 	private LocalDate dateDue;
 	private LocalDate dateReturned;
 	private User user;
 	private PhysicalItem item;
-	private int currentDate;
-	private double penalty;
-	private boolean returned = false;
 	private int userId;
 	private int itemId;
 	private int rentalId;
 	private static int lastId = 0;
-	
 
 
+	//used to access and update the csv files
 	String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
 	MaintainUser maintainUser = new MaintainUser();
-	
+
 	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
 	MaintainPhysicalItems  maintainItem = new MaintainPhysicalItems();
-	
+
+	//this constructor is for creating rent objects from the csv file
 	public Rent(int userId, int itemId, LocalDate dateBorrowed, LocalDate dateDue, LocalDate dateReturned, int rentalId) throws Exception {
 		this.userId = userId;
 		this.itemId = itemId;
@@ -42,11 +37,9 @@ public class Rent {
 		setUser(this.userId);
 		setItem(this.itemId);
 		this.rentalId = rentalId;
-		lastId = rentalId;
-		//get access to itemcount of item and decrease by if that specific item
-		
+		lastId = rentalId;		
 	}
-	
+	//this constructor is for creating new rent objects
 	public Rent(User user, String itemTitle, String itemAuthor, MaintainPhysicalItems maintainItems) throws Exception {
 		this.user = user;
 		System.out.println(user);
@@ -58,59 +51,42 @@ public class Rent {
 		this.rentalId = ++lastId;
 		setItem(this.itemId);
 		maintainItems.decreaseCopies(this.item.getId());
-//		System.out.println(this.item);
-//		this.item.setNumOfCopies(this.item.getNumOfCopies()-1);
-//		System.out.println(this.item);
-//		System.out.println("*********************");
-//		for(PhysicalItem i: maintainItem.items){
-//			System.out.println(i.toString());
-//		}
-
-//		System.out.println(this.itemId + " copies: " + this.item.getNumOfCopies());
 	}
-	
-	
-	
-	//GET USER AND ITEM OBJECT FROM IDS!!!!
+
+
+
+	//getters and setters
 	public void setUser(int userId) throws Exception {
 		maintainUser.load(userPath);
-	    for (User user : maintainUser.users) {
-	        if (user.getId() == userId) {
-	            this.user = user;
-	        }
+		for (User user : maintainUser.users) {
+			if (user.getId() == userId) {
+				this.user = user;
+			}
 
-	    }
+		}
 	}
 	public void setItem(int itemId) throws Exception {
 		maintainItem.load(itemsPath);
-	    for (PhysicalItem item : maintainItem.items) {
-	        if (item.getId() == itemId) {
-	            this.item = item;
-	        }
+		for (PhysicalItem item : maintainItem.items) {
+			if (item.getId() == itemId) {
+				this.item = item;
+			}
 
-	    }
+		}
 	}
-	
 	public void setItemId(String itemTitle, String itemAuthor) throws Exception {
 		maintainItem.load(itemsPath);
-	    for (PhysicalItem item : maintainItem.items) {
-	        if (item.getAuthor().equals(itemAuthor)&& item.getTitle().equals(itemTitle)) {
-	            this.itemId = item.getId();
-	        }
+		for (PhysicalItem item : maintainItem.items) {
+			if (item.getAuthor().equals(itemAuthor)&& item.getTitle().equals(itemTitle)) {
+				this.itemId = item.getId();
+			}
 
-	    }
+		}
 	}
-	
-
-	
-	
-
 
 	public LocalDate getDateBorrowed() {
 		return dateBorrowed;
 	}
-
-
 	public void setDateBorrowed(LocalDate dateBorrowed) {
 		this.dateBorrowed = dateBorrowed;
 	}
@@ -165,74 +141,28 @@ public class Rent {
 		this.rentalId = rentalId;
 	}
 
-	@Override
-	public String toString() {
-		return "Rental [id=" + this.rentalId + " item name=" + this.item.getTitle()+ ", rented by:" + this.user.getEmail()+  ", date borrowed="+ this.dateBorrowed + ", date due="+ this.dateDue+ ", date returned="+ this.dateReturned+"]";                                     
-	}
-	
-
-
-
 
 	public User getUser() {
 		return user;
 	}
 
 
-
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+
 	public PhysicalItem getItem() {
 		return item;
 	}
+
+
 	public void setItem(PhysicalItem item) {
 		this.item = item;
 	}
 
 
 
-//
-//	public void rentItem(Rent rental) {
-//		if(this.user.getRentals().size() >= 10 || this.user.totalOverdue(user) == 3 ) {
-//			System.out.println("You are unable to rent any items");
-//		}
-//		else {
-//			this.user.addRental(rental);
-//		}
-//	}
-//
-//	public boolean isOverdue(Rent rental) {
-//		if (rental.returned == false) {
-//			if (rental.dateDue > rental.dateBorrowed) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	public void calculatePenalty(Rent rental) {
-//		if (isOverdue(rental)== true) {
-//			this.penalty = (rental.currentDate - rental.dateDue)*0.5;
-//		}
-//		else {
-//			if((rental.dateReturned - rental.dateDue) > 0) {
-//				this.penalty = (rental.dateReturned - rental.dateDue)*0.5;
-//			}
-//		}
-//
-//	}
-//
-//	public void returnItem(Rent rental) {
-//		this.user.removeRental(rental);
-//		returned = true;
-//		this.dateReturned = this.currentDate;
-//
-//	}
-//
-//
 
-
-
-
+	
 }

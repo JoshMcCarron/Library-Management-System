@@ -1,23 +1,14 @@
-//I am not sure if this will be needed, but I added it in case
-//Textbooks will be a part of each course so it will not have it's own maintain class
 package maintaining;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import com.csvreader.CsvReader;
-
-
-
 import course.Course;
 
-
+//class for creating new course objects for each course entry in the course csv file
 public class MaintainCourses {
 	public ArrayList<Course> courses = new ArrayList<Course>();
 	public String path;
-
-
-
 
 	public void load(String path) throws Exception{
 		CsvReader reader = new CsvReader(path); 

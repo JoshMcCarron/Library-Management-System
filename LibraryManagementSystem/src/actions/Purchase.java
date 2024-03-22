@@ -1,8 +1,6 @@
 package actions;
 
-import items.Newsletter;
-import items.PhysicalItem;
-import userTypes.User;
+//This class is to handle each purchase interaction
 
 public class Purchase {
   private int purchaseId;
@@ -10,13 +8,14 @@ public class Purchase {
   private int itemId;
   private static int lastId = 0;
 
-
+//constructor for creating new purchases
   public Purchase(int userId, int itemId) {
 	  this.purchaseId =  ++lastId;
 	 this.userId = userId;
 	 this.itemId = itemId;
 	  
   }
+  //constructor for creating purchases from the purchase csv file
   public Purchase(int purchaseId, int userId, int itemId) {
 	 this.purchaseId = purchaseId;
 	 this.userId = userId;
@@ -26,7 +25,7 @@ public class Purchase {
   }
 
 
-
+//getters and setters
 public int getPurchaseId() {
 	return purchaseId;
 }

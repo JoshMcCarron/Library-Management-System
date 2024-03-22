@@ -4,10 +4,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-
 import structure.Management;
 import userTypes.*;
-
+//class for creating new user objects and writing object entries to the user csv file
 public class MaintainUser {
 	public ArrayList<User> users = new ArrayList<User>();
 	public String path;
@@ -21,6 +20,7 @@ public class MaintainUser {
 			String userType = reader.get("userType");
 			User user;
 
+			
 			switch(userType) {
 			case "Student":
 				user = new Student(Integer.parseInt(reader.get("id")),path, path, path);

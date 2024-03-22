@@ -14,7 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame implements ActionListener {
-    private JPanel panel = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel panel = new JPanel();
     private JFrame frame = new JFrame();
     private JLabel userLabel = new JLabel("Email");
     private JTextField userText = new JTextField(30);
@@ -96,7 +100,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Login successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path, maintainUser);
+					new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path, maintainUser);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -110,7 +114,7 @@ public class LoginPage extends JFrame implements ActionListener {
     		}         
            
         } else if (e.getSource() == registerButton) {
-            RegisterPage regPage = new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+            new RegisterPage(maintainUser, manager, userPath, maintainRental,maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
             frame.dispose();
         }
     }

@@ -1,15 +1,16 @@
 package items;
-
+//abstract class for handling each item in the system
 public abstract class PhysicalItem {
-    private int numOfCopies;
-    private String title;
-    private static int lastId = 0;
-    private int id;
-    private String location;
-    private String author;
-    private String itemType;
-    private String purchasable;
-	
+	private int numOfCopies;
+	private String title;
+	private static int lastId = 0;
+	private int id;
+	private String location;
+	private String author;
+	private String itemType;
+	private String purchasable;
+
+	//constructor for creating item objects from the item csv file
 	public PhysicalItem(int id, String title, String author, String itemType, int numOfCopies, String location, String purchasable) {
 		this.title = title;
 		this.author = author;
@@ -20,6 +21,7 @@ public abstract class PhysicalItem {
 		this.location = location;
 		this.purchasable= purchasable;
 	}
+	//constructor for creating new item objects
 	public PhysicalItem(String title, String author, String itemType) {
 		this.title = title;
 		this.author = author;
@@ -28,18 +30,17 @@ public abstract class PhysicalItem {
 		this.itemType = itemType;
 		this.location = "UNKOWN";
 	}
-	
-	
-	
-	
-	
+
+	//called when item is rented/returned
 	public void decreaseCopies() {
 		this.numOfCopies--;
 	}
-	
+
 	public void increaseCopies() {
 		this.numOfCopies++;
 	}
+	
+	//getters and setters
 	public int getNumOfCopies() {
 		return numOfCopies;
 	}
@@ -71,11 +72,7 @@ public abstract class PhysicalItem {
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
-	
-	@Override
-	public String toString() {
-		return "Item Details ["+this.itemType+": author=" + this.author + ", title=" + this.title + ",Num of Copies=" + this.numOfCopies + ", location=" + this.location +"]";
-	}
+
 	public String getLocation() {
 		return location;
 	}
@@ -88,4 +85,5 @@ public abstract class PhysicalItem {
 	public void setPurchasable(String purchasable) {
 		this.purchasable = purchasable;
 	}
+
 }

@@ -8,12 +8,12 @@ id,title,copies,author,itemType,location,purchasable
 7,title7,3,author7,Book,section 2,10
 8,title8,5,author8,Book,section 2,
 9,title9,4,author9,CD,section 4,
-10,title10,4,author10,Book,section 2,12
+10,title10,5,author10,Book,section 2,12
 12,title12,5,author12,Book,UNKOWN,
 13,title13,4,author13,Book,UNKOWN,
 14,title14,2,author14,Book,UNKOWN,
-15,title15,4,author15,Book,UNKOWN,
+15,title15,5,author15,Book,UNKOWN,
 16,title16,4,author16,CD,UNKOWN,
-17,title17,4,author17,Book,UNKOWN,
+17,title17,5,author17,Book,UNKOWN,
 18,title18,5,author18,Book,UNKOWN,
 19,title19,5,author19,Book,UNKOWN,

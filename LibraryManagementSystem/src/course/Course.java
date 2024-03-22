@@ -1,11 +1,8 @@
 package course;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Random;
-
 import maintaining.MaintainUser;
-import textbook.Textbook;
 import userTypes.Observer;
 import userTypes.Subject;
 import userTypes.User;
@@ -29,7 +26,7 @@ public class Course implements Subject{
 	MaintainUser maintainUser = new MaintainUser();
 
 
-
+	//constructor for creating course objects from the courses csv file
 	public Course(int courseId, int facultyId, int studentId1, int studentId2, int studentId3, String textbook, String textbookStatus, LocalDate startDate, LocalDate endDate, String courseName) throws Exception {
 		this.courseId = courseId;
 		this.facultyId=facultyId;
@@ -43,13 +40,10 @@ public class Course implements Subject{
 		this.courseName = courseName;
 		Random random = new Random();
 		this.textAvail = random.nextBoolean();
-//		addObserver(facultyId);
-//		if (this.observer!=null) {
-//			checkTextStatus();
-//		}
 
 	}
 
+	//part of the observer design pattern
 	public void addObserver(int facultyId) throws Exception {
 		maintainUser.load(userPath);
 		for (User user : maintainUser.users) {
@@ -59,7 +53,7 @@ public class Course implements Subject{
 
 		}
 	}
-
+	//getters and setters
 	public int getCourseId() {
 		return courseId;
 	}
@@ -132,12 +126,6 @@ public class Course implements Subject{
 		this.endDate = endDate;
 	}
 
-	@Override
-	public String toString() {
-		return this.getCourseName() + ": "+ this.getTextbook() +", start date: "+this.getStartDate() + ", end date: "+this.getEndDate();
-
-	}
-
 	public String getCourseName() {
 		return courseName;
 	}
@@ -154,13 +142,26 @@ public class Course implements Subject{
 		this.textAvail = textAvail;
 	}
 
+	public Observer Observer(){
+		return observer;
+	}
+	public String getNewEditionMessage(){
+		return newEditionMessage;
+	}
+
+	//to string method for testing purposes
+	@Override
+	public String toString() {
+		return this.getCourseName() + ": "+ this.getTextbook() +", start date: "+this.getStartDate() + ", end date: "+this.getEndDate();
+
+	}
 
 	//	@Override
 	//	public void removeObserver(Observer observer) {
 	//		// TODO Auto-generated method stub
 	//		
 	//	}
-
+	//part of the observers design pattern
 	@Override
 	public void notifyObserver(String newEdition) {
 		// TODO Auto-generated method stub
@@ -175,14 +176,5 @@ public class Course implements Subject{
 		}
 	}
 
-	public Observer Observer(){
-		return observer;
-	}
-	public String getNewEditionMessage(){
-		return newEditionMessage;
-	}
-
 }
-//    public void accessVirtualText(Textbook textbook) {
-//        // implementation here
-//    }
+
