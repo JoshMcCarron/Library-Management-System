@@ -96,7 +96,7 @@ public class LoginPage extends JFrame implements ActionListener {
     			JOptionPane.showMessageDialog(null, "Login successful! Welcome!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     			try {
-					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path);
+					AppGUI mainPage = new AppGUI(user, manager, maintainRental, maintainCourse, maintainItem, itemsPath, rentalsPath, purchasePath, maintainPurchase, onlineBook1Path, onlineBook2Path, maintainUser);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

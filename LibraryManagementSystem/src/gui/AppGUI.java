@@ -12,6 +12,7 @@ import maintaining.MaintainCourses;
 import maintaining.MaintainPhysicalItems;
 import maintaining.MaintainPurchases;
 import maintaining.MaintainRentals;
+import maintaining.MaintainUser;
 import search.Search;
 import structure.Management;
 import userTypes.User;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
 
 public class AppGUI extends JFrame implements ActionListener {
 	private User user;
+	private MaintainUser maintainUser;
 	private MaintainRentals maintainRental;
 	private MaintainCourses maintainCourse;
 	private MaintainPhysicalItems maintainItem;
@@ -47,7 +49,7 @@ public class AppGUI extends JFrame implements ActionListener {
 	private String onlineBook1Path;
 	private String onlineBook2Path;
 
-	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path, MaintainUser maintainUser) throws Exception {
 		this.user = user;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
@@ -59,6 +61,7 @@ public class AppGUI extends JFrame implements ActionListener {
 		this.maintainPurchase = maintainPurchase;
 		this.onlineBook1Path = onlineBook1Path;
 		this.onlineBook2Path = onlineBook2Path;
+		this.maintainUser = maintainUser;
 
 		setTitle("Library");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -322,13 +325,86 @@ public class AppGUI extends JFrame implements ActionListener {
 		return requestPanel;
 	}
 
-	//User Page
+	//The Start of the userpage code
+	// User Page
 	private JPanel createUserPage() {
 		JPanel userPanel = new JPanel();
-		JLabel searchBarLabel = new JLabel("Search Bar");
-		searchBarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
 		userPanel.setBorder(BorderFactory.createTitledBorder("User"));
+
+		// Account Type
+		JPanel accountTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel accountTypeLabel = new JLabel("Account Type: ");
+		JTextField accountTypeField = new JTextField(user.getUserType());
+		accountTypeField.setEditable(false);
+		accountTypePanel.add(accountTypeLabel);
+		accountTypePanel.add(accountTypeField);
+		userPanel.add(accountTypePanel);
+
+		// Account Username
+		JPanel usernamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel usernameLabel = new JLabel("Account Email: ");
+		JTextField usernameField = new JTextField(user.getEmail());
+		usernameField.setEditable(false);
+		usernamePanel.add(usernameLabel);
+		usernamePanel.add(usernameField);
+		userPanel.add(usernamePanel);
+
+		// Collective Fine
+		JPanel finePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel fineLabel = new JLabel("You have a collective fine of $");
+		user.calculateFines(maintainRental.rentals);
+		double fine = user.getFine();
+		String formattedFine = String.format("%.2f", fine);
+		JTextField fineField = new JTextField(formattedFine); // Example fine amount
+		fineField.setEditable(false);
+		finePanel.add(fineLabel);
+		finePanel.add(fineField);
+		userPanel.add(finePanel);
+
+		// Manager Code
+		JPanel managerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel managerLabel = new JLabel("Manager Code: ");
+		managerPanel.add(managerLabel);
+		
+		JTextArea managerField = new JTextArea(1, 20);
+		managerPanel.add(managerField);
+		managerField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+		managerField.setEditable(true);
+		
+		JButton managerButton = new JButton("Verify");
+		managerPanel.add(managerButton);
+
+		managerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (managerField.getText().equals(manager.getManagerCode())) {
+				NewItem newItemPage = new NewItem(maintainItem, itemsPath, maintainRental, rentalsPath);
+				}
+				else {
+					managerField.setText("");
+				}
+			}
+		});
+		userPanel.add(managerPanel);
+
+
+
+		// Logout Button
+		JPanel logoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JButton logoutButton = new JButton("Logout");
+		logoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int a = JOptionPane.showConfirmDialog(null, "Are you sure?");
+				if (a == JOptionPane.YES_OPTION) {
+					LoginPage login = new LoginPage(maintainUser, manager, itemsPath, maintainRental, maintainCourse, maintainItem, itemsPath, itemsPath, itemsPath, maintainPurchase, itemsPath, itemsPath);
+					dispose();
+				}
+			}
+		});
+
+		logoutPanel.add(logoutButton);
+		userPanel.add(logoutPanel);
 
 		return userPanel;
 	}

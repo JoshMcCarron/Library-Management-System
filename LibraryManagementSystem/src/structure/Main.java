@@ -627,9 +627,7 @@ public class Main {
 						default:
 							throw new IllegalArgumentException("Invalid item type: " + manageType);
 						}
-//						Book manageItem = new Book(manageTitle, manageAuthor, manageType);
-//						maintainItem.items.add(manageItem);
-//						maintainItem.update(itemsPath);
+
 					}
 				}
 
