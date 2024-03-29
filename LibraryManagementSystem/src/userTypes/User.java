@@ -23,11 +23,11 @@ public abstract class  User implements Observer{
 	private static int lastId = 0;
 	private int id;
 	private String userType;
-	private static final String CSV_FILE_PATH = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
-	String rentalsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\itemsBorrowed.csv";
+	private static final String CSV_FILE_PATH = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/user.csv";
+	String rentalsPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/itemsBorrowed.csv";
 	MaintainRentals maintainRental = new MaintainRentals();
 
-	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
+	String itemsPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/items.csv";
 
 
 	public User(int id, String email, String password, String userType) throws Exception{

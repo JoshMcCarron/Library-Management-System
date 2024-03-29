@@ -21,10 +21,10 @@ public class Rent {
 
 
 	//used to access and update the csv files
-	String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
+	String userPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/user.csv";
 	MaintainUser maintainUser = new MaintainUser();
 
-	String itemsPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\items.csv";
+	String itemsPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/items.csv";
 	MaintainPhysicalItems  maintainItem = new MaintainPhysicalItems();
 
 	//this constructor is for creating rent objects from the csv file
