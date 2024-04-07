@@ -161,8 +161,4 @@ public class Rent {
 		this.item = item;
 	}
 
-
-
-
-	
 }

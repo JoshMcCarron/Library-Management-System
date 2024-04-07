@@ -22,7 +22,7 @@ public class Course implements Subject{
 	private Observer observer;
 	private String newEditionMessage;
 
-	String userPath = "C:\\Users\\Josh\\git\\LibraryAppEECS3311\\LibraryManagementSystem\\user.csv";
+	String userPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/user.csv";
 	MaintainUser maintainUser = new MaintainUser();
 
 

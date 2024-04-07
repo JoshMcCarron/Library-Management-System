@@ -298,8 +298,4 @@ public abstract class  User implements Observer{
 
 
 
-
-
-
-
 }

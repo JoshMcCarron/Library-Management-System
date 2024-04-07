@@ -4,7 +4,6 @@ package userTypes;
 import structure.Management;
 
 public class Faculty extends User{
-	protected boolean validate = true;
 	public Faculty(int id,String email, String password, String userType) throws Exception {
 		// TODO Auto-generated constructor stub
 		super(id, email, password, userType);
@@ -13,8 +12,6 @@ public class Faculty extends User{
 		// TODO Auto-generated constructor stub
 		super(email, password, userType, manager);
 	}
-	public boolean getValidate() {
-		return true;
-	}
+
 
 }
