@@ -26,7 +26,7 @@ public abstract class PhysicalItem {
 		this.title = title;
 		this.author = author;
 		this.id = ++lastId;        
-		this.numOfCopies= 5;
+		this.numOfCopies= 20;
 		this.itemType = itemType;
 		this.location = "UNKOWN";
 	}

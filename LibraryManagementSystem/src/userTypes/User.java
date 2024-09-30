@@ -23,11 +23,11 @@ public abstract class  User implements Observer{
 	private static int lastId = 0;
 	private int id;
 	private String userType;
-	private static final String CSV_FILE_PATH = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/user.csv";
-	String rentalsPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/itemsBorrowed.csv";
+	private static final String CSV_FILE_PATH = "user.csv";
+	String rentalsPath = "itemsBorrowed.csv";
 	MaintainRentals maintainRental = new MaintainRentals();
 
-	String itemsPath = "/Users/ejirougolor/Documents/GitHub/LibraryAppEECS3311/LibraryManagementSystem/items.csv";
+	String itemsPath = "items.csv";
 
 
 	public User(int id, String email, String password, String userType) throws Exception{
@@ -63,7 +63,7 @@ public abstract class  User implements Observer{
 					//System.out.println("Your account has successfully been validated");
 				}
 				else {
-					throw new Exception("The management team has not validated your account!");	
+					throw new Exception("");	
 				}
 
 			}
@@ -295,6 +295,10 @@ public abstract class  User implements Observer{
 	//		}
 	//		return this.numOfOverdue;
 	//	}
+
+
+
+
 
 
 

@@ -5,8 +5,6 @@ import java.util.Random;
 public class Management {
 	private static Management singleManageTeam;
 	private final String managerCode = "1357";
-    private boolean validate;
-
 	private Management() {
 		
 	}
@@ -20,14 +18,8 @@ public class Management {
 	
 	//randomizer for validating users or not
 	public int  validate() {
-		Random rand = new Random();
+        Random rand = new Random();
         int randomNumber = rand.nextInt(10) + 1;
-        if (randomNumber > 5) {
-            this.validate = true;
-        }
-        else {
-            this.validate = false;
-        }
         return randomNumber;
 	}
 	  
@@ -40,8 +32,4 @@ public class Management {
 	public String getManagerCode() {
 		return managerCode;
 	}
-	
-	public boolean isValidate() {
-        return validate;
-    }
 }

@@ -41,6 +41,7 @@ public class AppGUI extends JFrame implements ActionListener {
 	private MaintainCourses maintainCourse;
 	private MaintainPhysicalItems maintainItem;
 	private Management manager;
+	private String userPath;
 	private String itemsPath;
 	private String rentalsPath;
 	private String purchasePath;
@@ -48,8 +49,9 @@ public class AppGUI extends JFrame implements ActionListener {
 	private String onlineBook1Path;
 	private String onlineBook2Path;
 
-	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path, MaintainUser maintainUser) throws Exception {
+	public AppGUI(User user,Management manager, MaintainRentals maintainRental, MaintainCourses maintainCourse, MaintainPhysicalItems maintainItem, String itemsPath, String rentalsPath, String purchasePath, MaintainPurchases maintainPurchase, String onlineBook1Path, String onlineBook2Path, MaintainUser maintainUser, String userPath) throws Exception {
 		this.user = user;
+		this.userPath = userPath;
 		this.maintainRental = maintainRental;
 		this.maintainCourse = maintainCourse;
 		this.maintainItem = maintainItem;
@@ -395,7 +397,7 @@ public class AppGUI extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				int a = JOptionPane.showConfirmDialog(null, "Are you sure?");
 				if (a == JOptionPane.YES_OPTION) {
-					new LoginPage(maintainUser, manager, itemsPath, maintainRental, maintainCourse, maintainItem, itemsPath, itemsPath, itemsPath, maintainPurchase, itemsPath, itemsPath);
+					new LoginPage(maintainUser, manager, userPath, maintainRental, maintainCourse, maintainItem, itemsPath, itemsPath, itemsPath, maintainPurchase, itemsPath, itemsPath);
 					dispose();
 				}
 			}

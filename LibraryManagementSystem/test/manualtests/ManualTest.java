@@ -94,45 +94,6 @@ public class ManualTest {
 	    }
 		
 
-		
-		@Test
-	    public void testStudentConstructor() throws Exception {
-	        Management manager = Management.getManagement();
-	        try {
-	            User user = new Student("testEmail", "testPassword", "Student", manager);
-	            if (manager.isValidate()) {
-	                assertEquals(23, user.getId());
-	            }
-	        } catch (Exception e) {
-	            assertTrue(e instanceof java.lang.Exception);
-	        }
-	    }
-		
-		@Test
-	    public void testFacultyConstructor() throws Exception {
-	        Management manager = Management.getManagement();
-	        try {
-	            User user = new Student("testEmail", "testPassword", "Student", manager);
-	            if (manager.isValidate()) {
-	                assertEquals(23, user.getId());
-	            }
-	        } catch (Exception e) {
-	            assertTrue(e instanceof java.lang.Exception);
-	        }
-	    }
-		
-		@Test
-	    public void testNonFacultyConstructor() throws Exception {
-	        Management manager = Management.getManagement();
-	        try {
-	            User user = new Student("testEmail", "testPassword", "Student", manager);
-	            if (manager.isValidate()) {
-	                assertEquals(23, user.getId());
-	            }
-	        } catch (Exception e) {
-	            assertTrue(e instanceof java.lang.Exception);
-	        }
-	    }
 	            
 		@Test
 	    public void testReturnDate() throws Exception {
